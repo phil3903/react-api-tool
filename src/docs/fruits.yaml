@@ -1,0 +1,99 @@
+name: fruit_counter
+displayName: Fruit Counter
+environments:
+  - name: development
+    displayName: Development
+    ssl: false
+    url: localhost
+    port: 8080
+    base: api
+  - name: production
+    displayName: Production
+    ssl: true
+    url: production-endpoint.com
+    port: 3000
+    base: api
+  - name: staging
+    displayName: Staging
+    ssl: false
+    url: staging-endpoint.net
+    port: 1337
+    base: api
+routes:
+  #POST
+  - name: add
+    displayName: Add New Fruit
+    group: Fruit
+    method: post
+    description: >
+     Add a fruit to the collection
+    endpoint: fruits
+    body:
+      - name: name
+        type: string
+        required: true
+        description: This is the name of the fruit.
+        choices:
+          - Banana
+          - Apple
+          - Orangem
+
+      - name: count
+        type: Number
+        required: false
+        description: Indicates how many of each fruit you own.
+        default: 0
+  #PUT
+  - name: updateById
+    displayName: Update Fruit By ID
+    method: put
+    group: Fruit
+    description: >
+      Update a fruit.
+      This is a long description,
+      and will render as a single line.
+    endpoint: fruits/:id
+    body:
+      - name: count
+        type: number
+        description: The number of fruits.
+
+      - name: name
+        type: String
+
+  #DELETE
+  - name: deleteAll
+    method: delete
+    displayName: Delete All Fruit
+    description: >
+      Removes all fruit from collection
+    endpoint: fruits
+
+  - name: deleteById
+    method: delete
+    displayName: Delete Fruit By ID
+    endpoint: fruits/:id
+  #GET
+  - name: getAll
+    displayName: Get All Fruit
+    method: get
+    group: Fruit
+    endpoint: fruits
+    params:
+      - name: page
+        type: Number
+        required: false
+        default: 1
+
+      - name: limit
+        type: Number
+        required: false
+        default: 10
+
+  - name: getById
+    method: get
+    displayName: Get Fruit By ID
+    endpoint: fruits/:id
+
+
+
