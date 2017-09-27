@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {push} from '../actions/router_actions'
-import get from 'lodash/get'
 import Icon from '../components/Icon'
 import icons from '../constants/icons'
 import Toolbar from '../components/Toolbar'
@@ -101,7 +100,7 @@ class EndpointClient extends React.Component {
               <Toolbar
                 height={60}
                 left={[
-                  <Heading size={1} text={ displayName + ' API' } />
+                  <Heading size={1} text={ displayName + ' API' } onClick={this.props.onNavClick } />
                 ]}/>
               <Dropdown style={ styles.dropdown }>
                 <DropdownNode style={ styles.environment }>

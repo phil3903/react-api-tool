@@ -5,11 +5,21 @@ import colors from '../constants/colors'
 import EndpointManager from './EndpointManager'
 import ApiClient from './ApiClient'
 import Docs from './Docs'
+import TDNavOverlay from '../components/nav_overlay/TDNavOverlay'
 
 class ClientContainer extends React.Component {
 
+  constructor (props){
+    super(props)
+    this.state = { isOverlayVisible: false }
+  }
+
   componentDidMount(){
     this.props.load()
+  }
+
+  handleNavClick =()=>{
+    this.setState({isOverlayVisible: !this.state.isOverlayVisible})
   }
 
   render(){
@@ -26,7 +36,11 @@ class ClientContainer extends React.Component {
     }
     return(
       <div style={ styles.base }>
-        <EndpointManager/>
+        <TDNavOverlay
+          onClose={ this.handleNavClick }
+          isVisible={this.state.isOverlayVisible}
+        />
+        <EndpointManager onNavClick={ this.handleNavClick }/>
         <ApiClient/>
         <Docs/>
       </div>

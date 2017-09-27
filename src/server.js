@@ -49,6 +49,9 @@ app.get('/api/fruits', (req, res, next) =>{
     query: req.query
   })
 })
+
+app.use('/api', (req, res, next) => res.status(404).json({message: 'Route does not exist'}))
+
 //main route
 app.use((req, res, next)=>{
   res.send(`
