@@ -67,7 +67,7 @@ class EndpointClient extends React.Component {
       },
       dropdownMenu:{
         base:{
-
+          transition: null
         }
       },
       dropdownOption:{
