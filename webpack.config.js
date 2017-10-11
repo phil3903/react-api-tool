@@ -94,15 +94,15 @@ module.exports = () => {
 
     default:
       clientConfig.plugins.push(
-        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        //new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new webpack.optimize.CommonsChunkPlugin({
-          names: ['vendor1','vendor2','vendor3','vendor4','vendor5','vendor6','vendor7','vendor8','vendor9','vendor10','vendor11','vendor12','vendor13','vendor14','vendor15', 'manifest'],
+          names: ['vendor1','vendor2','vendor3','vendor5','vendor6','vendor7','vendor8','vendor9','vendor10','vendor11','vendor12','vendor13','vendor14','vendor15', 'manifest'],
         }),
-        new webpack.optimize.UglifyJsPlugin({
-          comments: false,
-          sourceMap: false,
-          mangle: false
-        }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //   comments: false,
+        //   sourceMap: false,
+        //   mangle: false
+        // }),
         new HtmlWebpackPlugin({
           title: 'Template Title',
           template: path.join(PROJECT_ROOT, 'src/client/index.template.html'),
@@ -125,7 +125,6 @@ module.exports = () => {
         vendor1: ['react'],
         vendor2: ['react-dom'],
         vendor3: ['reactables'],
-        vendor4: ['reactables-charts'],
         vendor5: ['prop-types'],
         vendor6: ['redux'],
         vendor7: ['react-redux'],

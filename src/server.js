@@ -31,7 +31,7 @@ app.use((req, res, next)=>{
 })
 
 app.use(express.static(STATIC_PATH))
-const FILE_PATH = path.join(__dirname, 'docs/fruits.yaml')
+const FILE_PATH = path.join(__dirname, 'docs/docs.yaml')
 
 app.get('/api/docs', (req, res, next) => {
   const file = fs.readFileSync(FILE_PATH, 'utf8')
@@ -41,7 +41,11 @@ app.get('/api/docs', (req, res, next) => {
 
 app.get('/api/fruits', (req, res, next) =>{
   res.json({
-    results: ['Banana', 'Apple', 'Orange'],
+    results: [
+      {name: 'banana', displayName: 'Banana'},
+      {name: 'apple', displayName: 'Apple'},
+      {name: 'orange', displayName:'Orange'}
+    ],
     count: 3,
     page: 1,
     pages: 1,

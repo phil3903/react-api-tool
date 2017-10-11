@@ -60,6 +60,8 @@ routes:
 
       - name: name
         type: String
+        description: >
+          String value assigned to the fruit.
 
   #DELETE
   - name: deleteAll
@@ -79,16 +81,23 @@ routes:
     method: get
     group: Fruit
     endpoint: fruits
+    description: >
+      Returns all fruit present in the database.
+
     params:
       - name: page
         type: Number
         required: false
         default: 1
+        description: >
+          The page number of the results.
 
       - name: limit
         type: Number
         required: false
         default: 10
+        description: >
+          The number of results returned per page.
 
   - name: getById
     method: get

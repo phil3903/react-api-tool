@@ -5,7 +5,7 @@ import { Badge } from 'reactables'
 
 const StatusCode =({code})=>{
 
-  const styles = {
+  let styles = {
     base:{
       borderRadius: 2,
       color: colors.white,
@@ -17,6 +17,17 @@ const StatusCode =({code})=>{
     },
     hovered: null
   }
+
+  if (!code) return null
+
+  const errorRegex = /^4|^5|Error/
+  const redirectRegex = /^3/
+
+  if(errorRegex.test(code))
+    styles.base.backgroundColor = colors.red['400']
+
+  if(redirectRegex.test(code))
+    styles.base.backgroundColor = colors.blue['400']
 
   return(
     <Badge style={ styles } text={ code }/>

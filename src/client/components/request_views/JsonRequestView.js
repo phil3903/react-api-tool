@@ -22,7 +22,8 @@ export default class JsonRequestView extends React.Component {
           color: colors.white,
           border: 'none',
           borderColor: null,
-          padding: 5
+          padding: 5,
+          tabSize: 2
         },
         focus: {
           borderColor: null,
@@ -35,6 +36,7 @@ export default class JsonRequestView extends React.Component {
     return (
       <TextField
         autoFocus
+        shouldAllowTab
         element={'textarea'}
         value={value}
         onChange={onChange}

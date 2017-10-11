@@ -5,7 +5,7 @@ import { REQUEST_CLIENT, updateUrlMethod, updateUrlInput, sendRequestEntity, sav
 import { DOCS } from '../actions/docs_actions'
 import { selectEnvironment, selectRoute } from '../reducers/docs_reducer'
 import { selectParameters, selectUrl, selectMethod } from '../reducers/request_client_reducer'
-import { populateResponse } from '../actions/response_client_actions'
+import * as responseActions from '../actions/response_client_actions'
 import * as api from '../services/request_client_service'
 
 /**
@@ -50,6 +50,7 @@ function* watchSendRequest(){
     const url = yield select(selectUrl)
     const method = yield select(selectMethod)
     yield call(sendRequest, url, method.toUpperCase(), parameters)
+    yield put(responseActions.setSubnav('response'))
   }
 }
 

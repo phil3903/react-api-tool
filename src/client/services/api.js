@@ -22,7 +22,7 @@ export const Methods = {
   DELETE: 'DELETE'
 }
 
-function objectToQueryString(obj){
+export function objectToQueryString(obj){
   return _reduce(obj, (queryString, value, key) => {
     if(!value) return queryString
     const separator = queryString.length === 0 ? '?' : '&'

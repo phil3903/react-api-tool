@@ -6,6 +6,7 @@ import { socketEvents } from '../socket/events'
 import routerMiddleware from '../middleware/routerMiddleware'
 import createSagaMiddleware, { END } from 'redux-saga'
 import rootReducer from '../reducers/_root_reducer'
+import responseTimeMiddleware from '../middleware/responseTimeMiddleware'
 
 function configureStore(initialState, history){
 
@@ -16,6 +17,7 @@ function configureStore(initialState, history){
     rootReducer,
     initialState,
     applyMiddleware(
+      responseTimeMiddleware(),
       sagaMiddleware,
       socketMiddleware(socketConfig, socketEvents),
       routerMiddleware(history),

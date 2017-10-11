@@ -1,38 +1,23 @@
 import fetch from 'isomorphic-fetch'
 import _reduce from 'lodash/reduce'
+import { objectToQueryString, Methods } from './api'
 import * as tokenStorage from '../helpers/tokenStorage'
 
 const API_HEADERS =()=> {
-  const accessToken = tokenStorage.getToken()
-  const authHeader = accessToken ? {'Authorization': `JWT ${accessToken}`} : null
-
   return {
     'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
-    'Content-Type': 'application/json',
-    //...authHeader
+    'Content-Type': 'application/json'
   }
-}
-
-export const Methods = {
-  POST: 'POST',
-  GET: 'GET',
-  PUT: 'PUT',
-  DELETE: 'DELETE'
-}
-
-function objectToQueryString(obj){
-  return _reduce(obj, (queryString, value, key) => {
-    if(!value) return queryString
-    const separator = queryString.length === 0 ? '?' : '&'
-    return `${queryString}${separator}${key}=${value}`
-  }, '')
 }
 
 export const callApi =(endpoint, method, obj)=>{
 
+  console.log(obj)
+
   const queryString = method === Methods.GET ? objectToQueryString(obj): ''
   const fullUrl = endpoint + queryString
 
+  console.log(queryString)
 
   return fetch(fullUrl, {
     credentials: 'include',
@@ -42,31 +27,19 @@ export const callApi =(endpoint, method, obj)=>{
     cache: 'no-cache',
     body: method !== Methods.GET ? JSON.stringify(obj) : null
   })
-  .then(readResponse)
-  .then(handleErrors)
-  .then(({json, response}) => {
+    .then(response =>
+      response.json().then(json => ({json, response}))
+    ).then(({json, response}) => {
 
-    if(!response.ok) return Promise.reject({json})
-    return json
-  })
-  .then(
-    response => ({response}),
-    error => ({error})
-  )
-}
+      if(!response.ok) {
+        return Promise.reject(json)
+      }
 
-
-function handleErrors(response) {
-  if (!response.ok) {
-    throw Error(response.statusText);
-  }
-  return response;
-}
-
-function readResponse(response){
-  return response.json()
-    .then(blob => {
-      return {blob, response}
+      return ({metadata: response, json})
     })
+    .then(
+      response => ({response}),
+      error => ({error})
+    )
 }
 

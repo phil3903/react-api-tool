@@ -4,11 +4,15 @@ import { Dropdown, DropdownNode, DropdownMenu, DropdownOption, TextField } from 
 import Toolbar from '../components/Toolbar'
 import Icon from '../components/Icon'
 import StatusCode from '../components/StatusCode'
+import ResponseTime from '../components/ResponseTime'
+import CardNav from '../components/card_nav/CardNav'
+import CardNavLink from '../components/card_nav/CardNavLink'
+import CardNavDropdown from '../components/card_nav/CardNavDropdown'
 import colors, {primaryDark} from '../constants/colors'
 import shadows from '../constants/shadows'
 import icons from '../constants/icons'
-
-import { myAction} from '../actions/response_client_actions'
+import * as fileExporter from '../services/file_exporter'
+import * as responseActions from '../actions/response_client_actions'
 
 class ResponseClient extends React.Component {
   static propTypes = {
@@ -19,13 +23,15 @@ class ResponseClient extends React.Component {
 
   }
 
-  handleExportClick =()=>{
-
+  handleExport =(type, name, fields)=>{
+    const { payload } = this.props
+    fileExporter.download(type, payload, name, fields)
   }
+
 
   render(){
 
-    const payload = this.props.payload
+    const { payload, exportType, subnav } = this.props
     const styles = {
       base:{
         flex: 1,
@@ -59,7 +65,8 @@ class ResponseClient extends React.Component {
       },
       dropdownMenu:{
         base:{
-          boxShadow: shadows.two
+          boxShadow: shadows.two,
+          color: colors.black
         }
       },
       exportButton:{
@@ -79,28 +86,35 @@ class ResponseClient extends React.Component {
         <Toolbar
           height={60}
           left={[
-            <StatusCode code={200}/>
+            <StatusCode code={this.props.statusCode}/>
           ]}
           right={[
-            <Dropdown>
-              <DropdownNode style={ styles.exportButton }>
-                Export <Icon name={icons.arrow_drop_down}/>
-              </DropdownNode>
-              <DropdownMenu style={ styles.dropdownMenu }>
-                <DropdownOption text={'CSV'} value={'csv'} onClick={ this.handleExportClick }/>
-                <DropdownOption text={'JSON'} value={'json'} onClick={ this.handleExportClick }/>
-                <DropdownOption text={'XML'} value={'xml'} onClick={ this.handleExportClick }/>
-              </DropdownMenu>
-            </Dropdown>
+            <ResponseTime time={this.props.responseTime}/>
           ]}
         />
+        <CardNav>
+          <CardNavLink
+            text={'Response'}
+            onClick={()=> this.props.setSubnav('response')}
+            isActive={subnav === 'response'}/>
+
+          <CardNavLink
+            text={'Export'}
+            onClick={()=> this.props.setSubnav('export')}
+            isActive={subnav === 'export'}/>
+
+        </CardNav>
         <div style={ styles.body }>
-          <TextField
-            onClick={ ()=>this.props.myAction()}
-            element={'textarea'}
-            value={ this.props.clientResponse }
-            style={ styles.textField }
-          />
+          {subnav === 'response' ?
+            <TextField
+              onClick={ ()=>{} }
+              element={'textarea'}
+              value={ this.props.clientResponse }
+              style={ styles.textField }
+            /> : null }
+
+          { subnav === 'export' ? <div /> : null }
+
         </div>
       </div>
     )
@@ -115,5 +129,6 @@ function mapStateToProps(state){
   }
 }
 export default connect(mapStateToProps, {
-
+  setExportFormat: responseActions.setExportFormat,
+  setSubnav: responseActions.setSubnav
 })(ResponseClient)

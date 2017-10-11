@@ -64,5 +64,8 @@ export default function docs( state = initialState, action ) {
  * Selectors
  */
 
+export const selectAllEnvironments =(state) => state.docs.environments
 export const selectEnvironment =(state)=> state.docs.selectedEnvironment
+
+export const selectAllRoutes =(state)=> state.docs.routes
 export const selectRoute =(state)=> state.docs.selectedRoute
