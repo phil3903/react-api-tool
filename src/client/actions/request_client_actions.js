@@ -14,6 +14,7 @@ export const REQUEST_CLIENT = prefixActionTypes('REQUEST_CLIENT',[
   'DELETE_FORM_PARAMETER',
   'UPDATE_FORM_PARAMETER_KEY',
   'UPDATE_FORM_PARAMETER_VALUE',
+  'SET_JSON_VALIDATION',
   {SEND_REQUEST: createRequestTypes('SEND_REQUEST')},
   {SAVE_REQUEST: createRequestTypes('SAVE_REQUEST')}
 ])
@@ -35,7 +36,7 @@ export const addFormParameter =()=> action(REQUEST_CLIENT.ADD_FORM_PARAMETER)
 export const deleteFormParameter =(index) => action(REQUEST_CLIENT.DELETE_FORM_PARAMETER, {index})
 export const updateFormParameterKey =(index, key) => action(REQUEST_CLIENT.UPDATE_FORM_PARAMETER_KEY, {index, key})
 export const updateFormParameterValue =(index, value) => action(REQUEST_CLIENT.UPDATE_FORM_PARAMETER_VALUE, {index, value})
-
+export const setJsonValidation =(isValid)=> action(REQUEST_CLIENT.SET_JSON_VALIDATION, {isValid})
 
 /**
  * Saga Triggers

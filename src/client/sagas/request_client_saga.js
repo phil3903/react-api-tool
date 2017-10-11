@@ -46,9 +46,11 @@ function* watchEndpointManagerUpdates(){
 function* watchSendRequest(){
   while (true) {
     yield take(REQUEST_CLIENT.EXECUTE_SEND_REQUEST)
+
     const parameters = yield select(selectParameters)
     const url = yield select(selectUrl)
     const method = yield select(selectMethod)
+
     yield call(sendRequest, url, method.toUpperCase(), parameters)
     yield put(responseActions.setSubnav('response'))
   }

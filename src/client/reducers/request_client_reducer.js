@@ -4,11 +4,11 @@ const initialState = {
   subnav: 'format',
   requestFormat: 'form',
   requestFormatDisplay: 'Form',
-  urlInput: '',
-  urlMethod: '',
+  urlInput: undefined,
+  urlMethod: undefined,
   formParameterList: [{key: '', value: ''}],
   jsonInput: '{}',
-
+  isJsonValid: true
 }
 
 export default function requestClient( state = initialState, action ) {
@@ -58,6 +58,9 @@ export default function requestClient( state = initialState, action ) {
         ]
       }
 
+    case REQUEST_CLIENT.SET_JSON_VALIDATION:
+      return {...state, isJsonValid: action.isValid}
+
     case REQUEST_CLIENT.RESET:
       return initialState
     default:
@@ -69,6 +72,15 @@ export default function requestClient( state = initialState, action ) {
  * Selectors
  */
 
-export const selectParameters =(state)=> state.requestClient.formParameterList
+export const selectParameters =(state)=> {
+  const { requestFormat, formParameterList, jsonInput } = state.requestClient
+
+  if(requestFormat === 'form')
+    return formParameterList.reduce((obj, param) => ({...obj, [param.key]: param.value}), {})
+
+  if(requestFormat === 'json')
+    return JSON.parse(jsonInput)
+
+}
 export const selectMethod =(state)=> state.requestClient.urlMethod
 export const selectUrl =(state)=> state.requestClient.urlInput

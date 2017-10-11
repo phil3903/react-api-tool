@@ -5,6 +5,17 @@ import colors from '../../constants/colors'
 
 export default class JsonRequestView extends React.Component {
 
+  validate =(value)=>{
+    try { JSON.parse(value) }
+    catch (e) {
+      this.props.onValidate(false)
+      return false
+    }
+
+    this.props.onValidate(true)
+    return true
+  }
+
   render() {
     const {value, onChange, isActive} = this.props
     if (!isActive) return null
@@ -29,13 +40,25 @@ export default class JsonRequestView extends React.Component {
           borderColor: null,
           border: null
         }
-
+      },
+      errorMessage:{
+        base:{
+          top: 5,
+          right: 5
+        }
       }
 
     }
     return (
       <TextField
-        autoFocus
+        validateOnMount={true}
+        validateOnChange={true}
+        validators={[
+          {
+            errorMessage: 'Invalid JSON',
+            rule: this.validate
+          }]
+        }
         shouldAllowTab
         element={'textarea'}
         value={value}

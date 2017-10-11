@@ -24,6 +24,15 @@ class RequestClient extends React.Component {
     this.props.updateUrlInput(input)
   }
 
+  shouldDisableRequest =()=> {
+    const {requestFormat, urlInput, urlMethod, isJsonValid} = this.props
+
+    if (!urlInput || !urlMethod) return true
+    if (requestFormat === 'json' && !isJsonValid) return true
+
+    return false
+  }
+
   render(){
     const styles = {
       base:{
@@ -117,7 +126,7 @@ class RequestClient extends React.Component {
             <DropdownButton
               onSend={this.props.executeSendRequest}
               onSave={this.props.executeSaveRequest}
-              isDisabled={ !this.props.urlInput || !this.props.urlMethod }
+              isDisabled={ this.shouldDisableRequest() }
             />
           ]}
         />
@@ -157,6 +166,7 @@ class RequestClient extends React.Component {
             ? <JsonRequestView
                 isActive={ isJsonViewActive }
                 value={ this.props.jsonInput }
+                onValidate={ this.props.setJsonValidation }
                 onChange={ this.props.updateJsonInput }/>
             : null
           }
@@ -192,6 +202,7 @@ export default connect(mapStateToProps, {
   setSubnav: requestActions.setSubnav,
   setRequestFormat: requestActions.setRequestFormat,
   updateJsonInput: requestActions.updateJsonInput,
+  setJsonValidation: requestActions.setJsonValidation,
   loadEnvironment,
   loadRoute
 })(RequestClient)
