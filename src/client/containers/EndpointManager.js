@@ -9,6 +9,8 @@ import RouteNavigation from '../components/route_navigation/RouteNavigation'
 import { ListGroup, List, ListCell, ListToolbar, Dropdown, DropdownNode, DropdownOption, DropdownMenu } from 'reactables'
 import colors, {borderColor, primaryDark} from '../constants/colors'
 import { loadRoute, loadEnvironment } from '../actions/docs_actions'
+import {reset as resetRequestClient} from '../actions/request_client_actions'
+import {reset as resetResponseClient} from '../actions/response_client_actions'
 
 class EndpointClient extends React.Component {
 
@@ -19,9 +21,13 @@ class EndpointClient extends React.Component {
   }
 
   handleEndpoint =(group, endpoint)=>{
-    const {loadRoute, routes} = this.props
+    const {loadRoute, routes, resetRequestClient, resetResponseClient} = this.props
     const route = routes[group].find(r => r.name === endpoint )
+
+    resetRequestClient()
+    resetResponseClient()
     loadRoute(route)
+
   }
 
   render(){
@@ -153,6 +159,8 @@ function mapStateToProps(state){
 export default connect(mapStateToProps, {
   push,
   loadEnvironment,
-  loadRoute
+  loadRoute,
+  resetRequestClient,
+  resetResponseClient
 })(EndpointClient)
 

@@ -23,6 +23,8 @@ export const REQUEST_CLIENT = prefixActionTypes('REQUEST_CLIENT',[
  * Action Creators
  */
 
+export const reset =()=> action(REQUEST_CLIENT.RESET)
+
 // request url bar
 export const updateUrlInput =(input)=> action(REQUEST_CLIENT.UPDATE_URL_INPUT, {input})
 export const updateUrlMethod =(method)=> action(REQUEST_CLIENT.UPDATE_URL_METHOD, {method})

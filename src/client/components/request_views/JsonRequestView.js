@@ -6,6 +6,12 @@ import colors from '../../constants/colors'
 export default class JsonRequestView extends React.Component {
 
   validate =(value)=>{
+
+    if(!value || !value.length){
+      this.props.onValidate(true)
+      return true
+    }
+
     try { JSON.parse(value) }
     catch (e) {
       this.props.onValidate(false)

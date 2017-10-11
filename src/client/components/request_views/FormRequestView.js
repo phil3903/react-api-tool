@@ -30,6 +30,7 @@ const FormRequestView =({formParameterList, keyOptions, onKeyUpdate, onValueUpda
       }
     }
   }
+
   return(
     <div style={ styles.base }>
       {formParameterList.map((item, i) =>
@@ -37,7 +38,7 @@ const FormRequestView =({formParameterList, keyOptions, onKeyUpdate, onValueUpda
           key={i}
           index={i}
           listLength={formParameterList.length}
-          keyOptions={keyOptions}
+          keyOptions={keyOptions ? keyOptions.map(key => key.name) : []}
           param={item.key}
           value={item.value}
           onValueUpdate={onValueUpdate}

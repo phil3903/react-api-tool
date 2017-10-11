@@ -4,11 +4,11 @@ const initialState = {
   subnav: 'format',
   requestFormat: 'form',
   requestFormatDisplay: 'Form',
-  urlInput: undefined,
-  urlMethod: undefined,
+  urlInput: '',
+  urlMethod: '',
   formParameterList: [{key: '', value: ''}],
   jsonInput: '{}',
-  isJsonValid: true
+  isJsonValid: true,
 }
 
 export default function requestClient( state = initialState, action ) {
@@ -78,7 +78,7 @@ export const selectParameters =(state)=> {
   if(requestFormat === 'form')
     return formParameterList.reduce((obj, param) => ({...obj, [param.key]: param.value}), {})
 
-  if(requestFormat === 'json')
+  if(requestFormat === 'json' && jsonInput.length)
     return JSON.parse(jsonInput)
 
 }
