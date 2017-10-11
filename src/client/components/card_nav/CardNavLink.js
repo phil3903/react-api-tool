@@ -10,7 +10,8 @@ export default class CardNavLink extends React.Component {
     text: PropTypes.string,
     onClick: PropTypes.func,
     style: PropTypes.object,
-    isActive: PropTypes.bool
+    isActive: PropTypes.bool,
+    isDisabled: PropTypes.bool
   }
 
   state = { isHovered: false }
@@ -23,9 +24,14 @@ export default class CardNavLink extends React.Component {
     this.setState({ isHovered: false })
   }
 
+  handleClick =()=>{
+    const {isDisabled, onClick } = this.props
+    if(!isDisabled) onClick()
+  }
+
   render(){
 
-    const {text, style, isActive, onClick} = this.props
+    const {text, style, isActive, isDisabled} = this.props
 
     const styles = {
       base:{
@@ -49,6 +55,10 @@ export default class CardNavLink extends React.Component {
         },
         active: {
           color: colors.white
+        },
+        disabled:{
+          color: colors.grey[500],
+          cursor: 'default'
         }
       },
       container:{
@@ -70,19 +80,22 @@ export default class CardNavLink extends React.Component {
         },
         active:{
           backgroundColor: colors.yellow[600]
+        },
+        disabled:{
+          backgroundColor: null
         }
       }
     }
 
     merge(styles, style)
-    mergeEvents(styles.highlight, {isHovered: this.state.isHovered, isActive})
-    mergeEvents(styles.text, {isHovered: this.state.isHovered, isActive})
+    mergeEvents(styles.highlight, {isHovered: this.state.isHovered, isActive, isDisabled})
+    mergeEvents(styles.text, {isHovered: this.state.isHovered, isActive, isDisabled})
 
     return(
       <li
         onMouseOver={ this.onMouseOver }
         onMouseLeave={ this.onMouseLeave }
-        onClick={ onClick }
+        onClick={ this.handleClick }
         style={ styles.base }
       >
         <p style={ styles.text.base }>{ text }</p>

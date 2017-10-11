@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Dropdown, DropdownNode, DropdownMenu, DropdownOption, TextField } from 'reactables'
+import ExportWizard from '../components/ExportWizard'
 import Toolbar from '../components/Toolbar'
 import Icon from '../components/Icon'
 import StatusCode from '../components/StatusCode'
@@ -31,7 +32,9 @@ class ResponseClient extends React.Component {
 
   render(){
 
-    const { payload, exportType, subnav } = this.props
+    const { payload, exportType, subnav, clientResponse } = this.props
+    const isExportDisabled = !clientResponse || !clientResponse.length
+
     const styles = {
       base:{
         flex: 1,
@@ -101,7 +104,9 @@ class ResponseClient extends React.Component {
           <CardNavLink
             text={'Export'}
             onClick={()=> this.props.setSubnav('export')}
-            isActive={subnav === 'export'}/>
+            isActive={subnav === 'export'}
+            isDisabled={ isExportDisabled }
+          />
 
         </CardNav>
         <div style={ styles.body }>
@@ -109,11 +114,11 @@ class ResponseClient extends React.Component {
             <TextField
               onClick={ ()=>{} }
               element={'textarea'}
-              value={ this.props.clientResponse }
+              value={ clientResponse }
               style={ styles.textField }
             /> : null }
 
-          { subnav === 'export' ? <div /> : null }
+          { subnav === 'export' ? <ExportWizard/> : null }
 
         </div>
       </div>
