@@ -3,8 +3,25 @@
  * 500: Main Value
  */
 
-export const primaryDark = '#102027'
+export const secondary = '#102027' // blueGrey 900
+export const secondaryHover = '#37474F'   // blueGrey 800
+
+export const primary = '#263238'
+export const primaryHover = '#455A64'
+
+export const highlight = '#FDD835'
+export const highlightHover = '#FFEB3B'
+
+export const disabled = '#9E9E9E'
+
 export const borderColor = '#0c1219'
+export const white = '#ffffff'
+export const black = '#000000'
+
+export const green = '#4CAF50' //green 500
+export const purple = '#9C27B0' // purple 500
+export const blue = '#2196F3' //blue 500
+export const red = '#F44336' //red 500
 
 const Colors  = {
   red:{

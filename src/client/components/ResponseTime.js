@@ -9,7 +9,7 @@ const ResponseTime =({time})=>{
     base:{
       borderRadius: 2,
       color: colors.white,
-      backgroundColor: colors.blueGrey['500'],
+      backgroundColor: colors.blueGrey[500],
       fontSize: 18,
       marginRight: 10,
       padding: '0 15px',

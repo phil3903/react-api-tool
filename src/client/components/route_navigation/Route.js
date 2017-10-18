@@ -1,16 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import merge from 'lodash/merge'
-import colors, {primaryDark} from '../../constants/colors'
+import colors, {secondary} from '../../constants/colors'
 import { Badge } from 'reactables'
+import Icon from '../Icon'
+import icons from '../../constants/icons'
 
 export default class Route extends React.Component {
   static propTypes = {
     isHidden: PropTypes.bool,
+    isCustom: PropTypes.bool,
     displayName: PropTypes.string,
     method: PropTypes.oneOf(['get', 'post', 'put', 'delete']),
     onClick: PropTypes.func,
-
+    onDelete: PropTypes.func
   }
   constructor (props){
     super(props)
@@ -27,7 +30,7 @@ export default class Route extends React.Component {
         justifyContent: 'space-between',
         backgroundColor: colors.blueGrey[900],
         color: colors.white,
-        borderBottom: `1px solid ${primaryDark}`,
+        borderBottom: `1px solid ${secondary}`,
         height: 40,
         padding: '0 14px 0 10px',
         boxSizing: 'border-box',
@@ -40,8 +43,17 @@ export default class Route extends React.Component {
     }
 
     const textStyles = {
-      displayName:{
-
+      display:{
+        display: 'flex',
+        alignItems: 'center'
+      },
+      name:{
+        padding: 0,
+        margin: 0,
+        maxWidth: 120,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
       },
       method: {
         get: {color: colors.green[500]},
@@ -64,8 +76,12 @@ export default class Route extends React.Component {
         <span style={ textStyles.method[method] }>
           { method.toUpperCase() }
         </span>
-        <span style={ textStyles.displayName }>
-          {displayName}
+        <span style={ textStyles.display }>
+          <p style={ textStyles.name } title={displayName}>{displayName}</p>
+          { this.props.isCustom
+            ? <Icon name={icons.delete_forever} size={18} style={{paddingLeft: 5}}/>
+            : null
+          }
         </span>
       </div>
     )

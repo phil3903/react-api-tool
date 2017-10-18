@@ -2,8 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { TextField, Dropdown, DropdownNode, DropdownMenu, DropdownOption } from 'reactables'
 import * as requestActions from '../actions/request_client_actions'
+import { showModal as showSaveModal } from '../actions/save_request_actions'
 import { loadEnvironment, loadRoute } from '../actions/docs_actions'
-import colors, {primaryDark} from '../constants/colors'
+import colors, {secondary} from '../constants/colors'
 import icons from '../constants/icons'
 import DropdownButton from '../components/DropdownButton'
 import CardNav from '../components/card_nav/CardNav'
@@ -11,10 +12,15 @@ import CardNavLink from '../components/card_nav/CardNavLink'
 import CardNavDropdown from '../components/card_nav/CardNavDropdown'
 import Toolbar from '../components/Toolbar'
 import Icon from '../components/Icon'
+import SegmentedUrlBar from '../components/SegmentedUrlBar'
 import {FormRequestView, AuthRequestView, JsonRequestView }from '../components/request_views/index'
 
 
 class RequestClient extends React.Component {
+
+  handleUrlParamUpdate =(value, name)=>{
+
+  }
 
   handleUpdateUrlMethod =(method)=>{
     this.props.updateUrlMethod(method)
@@ -66,7 +72,7 @@ class RequestClient extends React.Component {
         base:{
           backgroundColor: colors.blueGrey[900],
           color: colors.white,
-          borderRight: `1px solid ${primaryDark}`,
+          borderRight: `1px solid ${secondary}`,
         }
       },
       dropdownOption:{
@@ -77,7 +83,7 @@ class RequestClient extends React.Component {
       sendButton:{
         base:{
           height: 36,
-          color: primaryDark,
+          color: secondary,
           backgroundColor: colors.yellow[600],
           boxSizing: 'border-box'
         },
@@ -99,10 +105,10 @@ class RequestClient extends React.Component {
           height={60}
           left={[
             <TextField
-              value={ this.props.urlInput }
+              value={this.props.urlInput}
+              onChange={this.handleUpdateUrlInput}
               style={ styles.textField }
               appendExtension={'left'}
-              onChange={ this.handleUpdateUrlInput }
               extension={
                 <Dropdown>
                   <DropdownNode style={ styles.dropdownNode }>
@@ -113,10 +119,15 @@ class RequestClient extends React.Component {
                     <Icon name={icons.arrow_drop_down}/>
                   </DropdownNode>
                   <DropdownMenu>
-                    <DropdownOption style={styles.dropdownOption } text={'GET'} value={'GET'} onClick={this.handleUpdateUrlMethod}/>
-                    <DropdownOption style={styles.dropdownOption } text={'POST'} value={'POST'} onClick={this.handleUpdateUrlMethod}/>
-                    <DropdownOption style={styles.dropdownOption } text={'PUT'} value={'PUT'} onClick={this.handleUpdateUrlMethod}/>
-                    <DropdownOption style={styles.dropdownOption } text={'DELETE'} value={'DELETE'} onClick={this.handleUpdateUrlMethod}/>
+                    { ['GET', 'POST', 'PUT', 'DELETE'].map(method =>
+                      <DropdownOption
+                        style={styles.dropdownOption }
+                        key={method}
+                        text={method}
+                        value={method}
+                        onClick={this.handleUpdateUrlMethod}
+                      />
+                    )}
                   </DropdownMenu>
                 </Dropdown>
               }
@@ -125,7 +136,7 @@ class RequestClient extends React.Component {
           right={[
             <DropdownButton
               onSend={this.props.executeSendRequest}
-              onSave={this.props.executeSaveRequest}
+              onSave={this.props.showSaveModal}
               isDisabled={ this.shouldDisableRequest() }
             />
           ]}
@@ -176,6 +187,8 @@ class RequestClient extends React.Component {
             : null
           }
         </div>
+
+
       </div>
     )
   }
@@ -203,6 +216,7 @@ export default connect(mapStateToProps, {
   setRequestFormat: requestActions.setRequestFormat,
   updateJsonInput: requestActions.updateJsonInput,
   setJsonValidation: requestActions.setJsonValidation,
+  showSaveModal,
   loadEnvironment,
   loadRoute
 })(RequestClient)

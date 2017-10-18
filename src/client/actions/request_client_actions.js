@@ -15,6 +15,8 @@ export const REQUEST_CLIENT = prefixActionTypes('REQUEST_CLIENT',[
   'UPDATE_FORM_PARAMETER_KEY',
   'UPDATE_FORM_PARAMETER_VALUE',
   'SET_JSON_VALIDATION',
+  'SHOW_SAVE_MODAL',
+  'HIDE_SAVE_MODAL',
   {SEND_REQUEST: createRequestTypes('SEND_REQUEST')},
   {SAVE_REQUEST: createRequestTypes('SAVE_REQUEST')}
 ])
@@ -39,7 +41,8 @@ export const deleteFormParameter =(index) => action(REQUEST_CLIENT.DELETE_FORM_P
 export const updateFormParameterKey =(index, key) => action(REQUEST_CLIENT.UPDATE_FORM_PARAMETER_KEY, {index, key})
 export const updateFormParameterValue =(index, value) => action(REQUEST_CLIENT.UPDATE_FORM_PARAMETER_VALUE, {index, value})
 export const setJsonValidation =(isValid)=> action(REQUEST_CLIENT.SET_JSON_VALIDATION, {isValid})
-
+export const showSaveModal =()=> action(REQUEST_CLIENT.SHOW_SAVE_MODAL)
+export const hideSaveModal =()=> action(REQUEST_CLIENT.HIDE_SAVE_MODAL)
 /**
  * Saga Triggers
  */
@@ -56,11 +59,5 @@ export const sendRequestEntity = {
   request: (query) => action(REQUEST_CLIENT.SEND_REQUEST.REQUEST, {...query}),
   success: (response) => action(REQUEST_CLIENT.SEND_REQUEST.SUCCESS, {response}),
   failure: (error) => action(REQUEST_CLIENT.SEND_REQUEST.FAILURE, {error})
-}
-
-export const saveRequestEntity = {
-  request: (request) => action(REQUEST_CLIENT.SAVE_REQUEST.REQUEST, {request}),
-  success: (response) => action(REQUEST_CLIENT.SAVE_REQUEST.SUCCESS, {response}),
-  failure: (error) => action(REQUEST_CLIENT.SAVE_REQUEST.FAILURE, {error})
 }
 

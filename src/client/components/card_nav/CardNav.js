@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import colors, { primaryDark } from '../../constants/colors'
+import colors, { secondary } from '../../constants/colors'
 import merge from 'lodash/merge'
 
 export default class CardNav extends React.Component {
@@ -22,7 +22,7 @@ export default class CardNav extends React.Component {
         margin: 0,
         padding: 0,
         backgroundColor: colors.blueGrey[900],
-        borderBottom: `1px solid ${ primaryDark }`,
+        borderBottom: `1px solid ${ secondary }`,
         boxSizing: 'border-box'
       }
     }

@@ -2,13 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Button, Dropdown, DropdownNode, DropdownMenu, DropdownOption, TextField } from 'reactables'
 import icons from '../constants/icons'
-import colors, {primaryDark} from '../constants/colors'
+import colors, {highlight, secondary} from '../constants/colors'
 import shadows from '../constants/shadows'
 import Icon from './Icon'
+import Input from './Input'
 
 const ParameterInput =(
-  {index, keyOptions, value, param, onAdd, onKeyUpdate, onValueUpdate, onDelete, listLength}
-  )=>{
+  {index, keyOptions, value, param, onAdd, onKeyUpdate, onValueUpdate, onDelete, listLength})=>{
   
   const styles = {
     base:{
@@ -25,14 +25,14 @@ const ParameterInput =(
         width: 150,
         marginRight: 10,
         backgroundColor: 'transparent',
-        borderBottom: `1px solid ${primaryDark}`,
+        borderBottom: `1px solid ${secondary}`,
         color: colors.white,
         borderRadius: 0,
         height: 40,
         fontSize: 16,
       },
       active:{
-        borderBottom: `1px solid ${colors.yellow[600]}`,
+        borderBottom: `1px solid ${highlight}`,
       }
     },
     dropdownMenu:{
@@ -44,24 +44,6 @@ const ParameterInput =(
     dropdownOption:{
       base:{
         color: colors.black
-      }
-    },
-    textField:{
-      input:{
-        base:{
-          border: 'none',
-          borderBottom: `1px solid ${primaryDark}`,
-          borderColor: primaryDark,
-          color: colors.white,
-          fontSize: 16,
-          borderRadius: 0,
-        },
-        focused:{
-          borderColor: colors.yellow[600]
-        },
-        blur:{
-          borderColor: primaryDark,
-        }
       }
     },
     deleteContainer:{
@@ -76,7 +58,7 @@ const ParameterInput =(
         bottom: -13,
         right: 0,
         padding: 0,
-        color: primaryDark,
+        color: secondary,
         backgroundColor: 'transparent'
       },
       disabled:{
@@ -107,12 +89,13 @@ const ParameterInput =(
           ) : null}
         </DropdownMenu>
       </Dropdown>
-      <TextField
+      <Input
         autoFocus
         placeholder={'value'}
-        style={ styles.textField }
         value={value}
         onChange={ (value)=> onValueUpdate(index, value) }
+        onClick={()=>{}}
+        isDisabled={!param}
         onEnterKey={ onAdd }
       />
       <div style={styles.deleteContainer}>

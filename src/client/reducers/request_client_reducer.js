@@ -8,7 +8,7 @@ const initialState = {
   urlMethod: '',
   formParameterList: [{key: '', value: ''}],
   jsonInput: '{}',
-  isJsonValid: true,
+  isJsonValid: true
 }
 
 export default function requestClient( state = initialState, action ) {
@@ -84,3 +84,5 @@ export const selectParameters =(state)=> {
 }
 export const selectMethod =(state)=> state.requestClient.urlMethod
 export const selectUrl =(state)=> state.requestClient.urlInput
+export const selectJsonInput = (state)=> state.requestClient.jsonInput
+export const selectFormParameterList =(state)=> state.requestClient.formParameterList

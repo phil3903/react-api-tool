@@ -21,7 +21,7 @@ environments:
     base: api
 routes:
   #POST
-  - name: add
+  - name: add_new_fruit
     displayName: Add New Fruit
     group: Fruit
     method: post
@@ -44,7 +44,7 @@ routes:
         description: Indicates how many of each fruit you own.
         default: 0
   #PUT
-  - name: updateById
+  - name: update_fruit_by_id
     displayName: Update Fruit By ID
     method: put
     group: Fruit
@@ -64,19 +64,19 @@ routes:
           String value assigned to the fruit.
 
   #DELETE
-  - name: deleteAll
-    method: delete
+  - name: delete_all_fruit
     displayName: Delete All Fruit
+    method: delete
     description: >
       Removes all fruit from collection
     endpoint: fruits
 
-  - name: deleteById
+  - name: delete_by_id
     method: delete
     displayName: Delete Fruit By ID
     endpoint: fruits/:id
   #GET
-  - name: getAll
+  - name: get_all
     displayName: Get All Fruit
     method: get
     group: Fruit
@@ -99,9 +99,9 @@ routes:
         description: >
           The number of results returned per page.
 
-  - name: getById
-    method: get
+  - name: get_fruit_by_id
     displayName: Get Fruit By ID
+    method: get
     endpoint: fruits/:id
 
 

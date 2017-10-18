@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import merge from 'lodash/merge'
 import Icon from '../Icon'
 import icons from '../../constants/icons'
-import colors, {primaryDark} from '../../constants/colors'
+import colors, {secondary} from '../../constants/colors'
 
 
 export default class RouteHeading extends React.Component{
@@ -22,7 +22,7 @@ export default class RouteHeading extends React.Component{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: primaryDark,
+        backgroundColor: secondary,
         color: colors.white,
         borderBottom: `1px solid ${colors.blueGrey[900]}`,
         height: 40,

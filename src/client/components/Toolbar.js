@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import merge from 'lodash/merge'
 import get from 'lodash/get'
-import colors, {primaryDark} from '../constants/colors'
+import colors, {secondary} from '../constants/colors'
 
 const Toolbar =({left, right, backgroundColor, height})=>{
   const styles = {
@@ -12,7 +12,7 @@ const Toolbar =({left, right, backgroundColor, height})=>{
       alignItems: 'center',
       boxSizing: 'border-box',
       //borderBottom: `1px solid ${colors.grey[500]}`,
-      backgroundColor: backgroundColor || primaryDark,
+      backgroundColor: backgroundColor || secondary,
       height,
     },
     left:{

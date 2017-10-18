@@ -25,6 +25,7 @@ export default class JsonRequestView extends React.Component {
   render() {
     const {value, onChange, isActive} = this.props
     if (!isActive) return null
+
     const styles = {
       wrapper: {
         base: {

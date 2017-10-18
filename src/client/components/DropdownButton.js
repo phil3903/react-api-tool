@@ -2,7 +2,7 @@ import React from 'react'
 import {Button, Dropdown, DropdownNode, DropdownMenu, DropdownOption} from 'reactables'
 import Icon from './Icon'
 import icons from '../constants/icons'
-import colors, {primaryDark} from '../constants/colors'
+import colors, {secondary} from '../constants/colors'
 
 const DropdownButton =({onSend, onSave, isDisabled})=>{
 
@@ -14,7 +14,7 @@ const DropdownButton =({onSend, onSave, isDisabled})=>{
     sendButton:{
       base:{
         height: 36,
-        color: primaryDark,
+        color: secondary,
         backgroundColor: colors.yellow[600],
         boxSizing: 'border-box',
         borderRadius: '2px 0 0 2px'
@@ -34,7 +34,7 @@ const DropdownButton =({onSend, onSave, isDisabled})=>{
         borderRadius: '0 2px 2px 0',
         backgroundColor: colors.yellow[600],
         color: colors.black,
-        borderLeft: `1px solid ${primaryDark}`
+        borderLeft: `1px solid ${secondary}`
       },
       hovered:{
         backgroundColor: colors.yellow[400],

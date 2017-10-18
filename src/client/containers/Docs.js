@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Table, Th, Td } from 'reactables'
-import colors, { primaryDark, borderColor } from '../constants/colors'
+import colors, { secondary } from '../constants/colors'
 import Toolbar from '../components/Toolbar'
 import Heading from '../components/Heading'
 
@@ -39,7 +39,7 @@ class Docs extends React.Component {
         margin: 0,
         fontSize: 14,
         fontWeight: 200,
-        backgroundColor: primaryDark,
+        backgroundColor: secondary,
         borderRadius: 2
       },
       displayName: {
@@ -50,9 +50,9 @@ class Docs extends React.Component {
       parameters:{
         table:{
           base:{
-            border: `1px solid ${primaryDark}`,
+            border: `1px solid ${secondary}`,
             borderRadius: 2,
-            backgroundColor: primaryDark
+            backgroundColor: secondary
           }
         },
         th:{
@@ -66,7 +66,7 @@ class Docs extends React.Component {
             backgroundColor: colors.blueGrey[900]
           },
           striped:{
-            backgroundColor: primaryDark
+            backgroundColor: secondary
           },
           hovered:{
             backgroundColor: colors.blueGrey[700]
@@ -92,7 +92,7 @@ class Docs extends React.Component {
         <div style={ styles.body }>
           <header style={styles.header}>
             <Heading size={3} text={route.displayName} style={ styles.displayName }/>
-            <Heading size={3} text={ `${'GET'}  /api/fruits` }/>
+            <Heading size={3} text={ route.endpoint ? `${route.method.toUpperCase()}  /${route.endpoint}` : '' }/>
           </header>
           <section style={styles.section}>
             <p style={ styles.description }>{ route.description }</p>

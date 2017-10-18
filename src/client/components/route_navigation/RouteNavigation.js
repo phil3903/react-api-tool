@@ -46,14 +46,16 @@ export default class RouteNavigation extends React.Component{
           shouldAnimate={this.state.isExpanded}
           height={ routes.length * 40 }
         >
-          <div ref={ ref => this.ref = ref }>
+          <div>
             {routes.map(route =>
               <Route
                 key={route.name}
                 displayName={route.displayName}
                 method={route.method}
-                onClick={ ()=> this.handleRouteClick(route.name) }
                 isHidden={ !this.state.isExpanded }
+                isCustom={route.isCustom}
+                onClick={ ()=> this.handleRouteClick(route.name) }
+                onDelete={ ()=> this.handleRouteDelete(route.name)}
               />
             )}
           </div>

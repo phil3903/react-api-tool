@@ -7,7 +7,7 @@ import Toolbar from '../components/Toolbar'
 import Heading from '../components/Heading'
 import RouteNavigation from '../components/route_navigation/RouteNavigation'
 import { ListGroup, List, ListCell, ListToolbar, Dropdown, DropdownNode, DropdownOption, DropdownMenu } from 'reactables'
-import colors, {borderColor, primaryDark} from '../constants/colors'
+import colors, {borderColor, secondary} from '../constants/colors'
 import { loadRoute, loadEnvironment } from '../actions/docs_actions'
 import {reset as resetRequestClient} from '../actions/request_client_actions'
 import {reset as resetResponseClient} from '../actions/response_client_actions'
@@ -27,7 +27,6 @@ class EndpointClient extends React.Component {
     resetRequestClient()
     resetResponseClient()
     loadRoute(route)
-
   }
 
   render(){
@@ -37,7 +36,7 @@ class EndpointClient extends React.Component {
         maxWidth: 250,
         height: '100%',
         borderRight: `1px solid ${borderColor}`,
-        backgroundColor: primaryDark
+        backgroundColor: secondary
       },
       cell:{
         base:{
@@ -85,7 +84,7 @@ class EndpointClient extends React.Component {
         base:{
           backgroundColor: colors.yellow[600],
           fontWeight: 400,
-          color: primaryDark,
+          color: secondary,
           justifyContent: 'space-between',
           height: 40,
           width: '100%',
@@ -120,7 +119,12 @@ class EndpointClient extends React.Component {
                     ? environments.map((env, i) =>
                       <DropdownOption
                         key={i}
-                        text={env.displayName || env.name }
+                        text={
+                          <span>
+                            <p style={{padding: 0, margin: 0}}>{ env.displayName || env.name }</p>
+                            <p style={{padding: '5px 0 0 0', margin: 0, fontSize: 12}}>{ env.fullUrl }</p>
+                          </span>
+                        }
                         value={env.name}
                         onClick={ this.handleEnvironment }
                         style={ styles.dropdownOption }

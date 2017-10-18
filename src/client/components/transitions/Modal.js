@@ -1,5 +1,6 @@
 import React from 'react'
 import Transition from 'react-transition-group/Transition'
+import get from 'lodash/get'
 
 const Modal =({ shouldShow, children })=>{
 
@@ -19,7 +20,7 @@ const Modal =({ shouldShow, children })=>{
       {(state)=> React.cloneElement(children, {
         style: {
           transition: `all ${animationDuration}ms ease`,
-          ...children.props.style,
+          ...get(children, 'props.style'),
           ...transitionStyles[state]
         }
       })}

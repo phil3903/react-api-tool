@@ -9,7 +9,7 @@ import ResponseTime from '../components/ResponseTime'
 import CardNav from '../components/card_nav/CardNav'
 import CardNavLink from '../components/card_nav/CardNavLink'
 import CardNavDropdown from '../components/card_nav/CardNavDropdown'
-import colors, {primaryDark} from '../constants/colors'
+import colors, {secondary} from '../constants/colors'
 import shadows from '../constants/shadows'
 import icons from '../constants/icons'
 import * as fileExporter from '../services/file_exporter'
@@ -75,7 +75,7 @@ class ResponseClient extends React.Component {
       exportButton:{
         base:{
           height: 36,
-          color: primaryDark,
+          color: secondary,
           backgroundColor: colors.yellow[600]
         },
         hovered:{

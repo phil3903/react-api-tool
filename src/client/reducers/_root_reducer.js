@@ -6,6 +6,7 @@ import error from './error_reducer'
 import docs from './docs_reducer'
 import requestClient from './request_client_reducer'
 import responseClient from './response_client_reducer'
+import saveRequest from './save_request_reducer'
 
 export default combineReducers({
   error,
@@ -14,6 +15,7 @@ export default combineReducers({
   login,
   requestClient,
   responseClient,
+  saveRequest,
   router
 })
 

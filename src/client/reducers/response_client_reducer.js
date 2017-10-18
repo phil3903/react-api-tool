@@ -47,7 +47,9 @@ export default function docs( state = initialState, action ) {
 
 
     case RESPONSE_CLIENT.SET_EXPORT_FORMAT:
-      return {...state,}
+      return {...state, exportFormat: action.format}
+
+    
 
     case RESPONSE_CLIENT.RESET:
       return initialState
