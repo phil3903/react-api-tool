@@ -19,9 +19,13 @@ export const white = '#ffffff'
 export const black = '#000000'
 
 export const green = '#4CAF50' //green 500
+
 export const purple = '#9C27B0' // purple 500
+
 export const blue = '#2196F3' //blue 500
+
 export const red = '#F44336' //red 500
+export const redHover = '#E53935' //red 400
 
 const Colors  = {
   red:{

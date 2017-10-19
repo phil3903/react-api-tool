@@ -50,7 +50,6 @@ function* watchSaveRequest(){
     // check for duplicates
     const name = toSnakeCase(displayName)
 
-
     const request = {
       name,
       displayName,
@@ -67,7 +66,7 @@ function* watchSaveRequest(){
 
 function* watchDeleteRequest(){
   while(true){
-    const {name} = yield take(PROFILE.EXECUTE_DELETE)
+    const {route} = yield take(PROFILE.EXECUTE_DELETE)
 
     const profile = select(selectProfile)
   }
@@ -75,7 +74,8 @@ function* watchDeleteRequest(){
 
 export const profileSagas = [
   watchSaveRequest,
-  watchProfileRequest
+  watchProfileRequest,
+  watchDeleteRequest
 ]
 
 

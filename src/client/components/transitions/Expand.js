@@ -41,12 +41,12 @@ export default class Expand extends React.Component {
     const { shouldAnimate, appear, children, staggerTime, duration, height} = this.props
 
     //const height = get(children, `props.style.height`)
-    const styles = {transition: `height ${duration}ms`}
+    const styles = {transition: `height ${duration}ms`, overflow: 'hidden'}
     const timeout = {enter: staggerTime, exit: staggerTime}
     const transitionStyles = {
       entering: {height: 0},
-      entered: {height, visibility: 'visible'},
-      exiting: {height, visibility: 'visible'},
+      entered: {height},
+      exiting: {height},
       exited: {height: 0}
     }
 

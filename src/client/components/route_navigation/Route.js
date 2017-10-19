@@ -2,14 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import merge from 'lodash/merge'
 import colors, {secondary} from '../../constants/colors'
-import { Badge } from 'reactables'
+import RouteDelete from './RouteDelete'
 import Icon from '../Icon'
 import icons from '../../constants/icons'
 
 export default class Route extends React.Component {
   static propTypes = {
     isHidden: PropTypes.bool,
-    isCustom: PropTypes.bool,
+    isSaved: PropTypes.bool,
     displayName: PropTypes.string,
     method: PropTypes.oneOf(['get', 'post', 'put', 'delete']),
     onClick: PropTypes.func,
@@ -17,7 +17,22 @@ export default class Route extends React.Component {
   }
   constructor (props){
     super(props)
-    this.state = { isHovered: false }
+    this.state = { isHovered: false, isDeleteVisible: false }
+  }
+
+  handleIconClick =(e)=>{
+    e.stopPropagation()
+    this.setState({ isDeleteVisible: true })
+  }
+
+  handleCancelClick =(value, e)=>{
+    e.stopPropagation()
+    this.setState({ isDeleteVisible: false})
+  }
+
+  handleDeleteClick =(value, e)=>{
+    e.stopPropagation()
+    this.props.onDelete()
   }
 
   render(){
@@ -25,20 +40,34 @@ export default class Route extends React.Component {
 
     const styles = {
       base:{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: colors.blueGrey[900],
-        color: colors.white,
-        borderBottom: `1px solid ${secondary}`,
+        position: 'relative',
         height: 40,
-        padding: '0 14px 0 10px',
         boxSizing: 'border-box',
         pointerEvents: isHidden ? 'none' : null,
-        fontSize: 14
+
       },
-      hovered:{
-        backgroundColor: colors.blueGrey[700]
+      cell:{
+        base: {
+          position: 'absolute',
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          backgroundColor: colors.blueGrey[900],
+          borderBottom: `1px solid ${secondary}`,
+          color: colors.white,
+          padding: '0 14px 0 10px',
+          boxSizing: 'border-box',
+          fontSize: 14,
+          top: 0,
+          left: 0,
+          zIndex: 1,
+          transition: 'left 0.5s'
+        },
+        hovered:{
+          backgroundColor: colors.blueGrey[700]
+        }
       }
     }
 
@@ -64,26 +93,40 @@ export default class Route extends React.Component {
     }
 
     if(this.state.isHovered)
-      merge(styles.base, styles.hovered)
+      merge(styles.cell.base, styles.cell.hovered)
+
+    if(this.state.isDeleteVisible)
+      merge(styles.cell.base, {left: -250})
 
     return(
-      <div
-        style={ styles.base }
-        onMouseOver={ ()=> this.setState({isHovered: true})}
-        onMouseLeave={ ()=> this.setState({isHovered: false})}
-        onClick={ onClick }
-      >
-        <span style={ textStyles.method[method] }>
-          { method.toUpperCase() }
-        </span>
-        <span style={ textStyles.display }>
-          <p style={ textStyles.name } title={displayName}>{displayName}</p>
-          { this.props.isCustom
-            ? <Icon name={icons.delete_forever} size={18} style={{paddingLeft: 5}}/>
-            : null
-          }
-        </span>
-      </div>
+        <div style={ styles.base }>
+          <div
+            style={ styles.cell.base }
+            onClick={ onClick }
+            onMouseOver={ ()=> this.setState({isHovered: true})}
+            onMouseLeave={ ()=> this.setState({isHovered: false})}
+          >
+            <span style={ textStyles.method[method] }>
+              { method.toUpperCase() }
+            </span>
+            <span style={ textStyles.display }>
+              <p style={ textStyles.name } title={displayName}>{displayName}</p>
+              { this.props.isSaved
+                ? <Icon
+                  name={icons.delete_forever}
+                  size={18}
+                  style={{paddingLeft: 5}}
+                  onClick={ this.handleIconClick }
+                />
+                : null
+              }
+            </span>
+          </div>
+          <RouteDelete
+            onDelete={ this.handleDeleteClick }
+            onCancel={ this.handleCancelClick }
+          />
+        </div>
     )
   }
 }

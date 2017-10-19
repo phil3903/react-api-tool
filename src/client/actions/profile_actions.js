@@ -21,7 +21,7 @@ export const reset =()=> action(PROFILE.RESET)
 
 export const load =()=> action(PROFILE.LOAD)
 export const executeSave =()=> action(PROFILE.EXECUTE_SAVE)
-export const executeDelete =(name)=> action(PROFILE.EXECUTE_DELETE, {name})
+export const executeDelete =(route)=> action(PROFILE.EXECUTE_DELETE, {route})
 
 /**
  * Saga Entity Requests

@@ -11,6 +11,7 @@ import colors, {borderColor, secondary} from '../constants/colors'
 import { loadRoute, loadEnvironment } from '../actions/docs_actions'
 import {reset as resetRequestClient} from '../actions/request_client_actions'
 import {reset as resetResponseClient} from '../actions/response_client_actions'
+import { executeDelete } from '../actions/profile_actions'
 
 class EndpointClient extends React.Component {
 
@@ -27,6 +28,10 @@ class EndpointClient extends React.Component {
     resetRequestClient()
     resetResponseClient()
     loadRoute(route)
+  }
+
+  handleDelete =(route)=>{
+    this.props.executeDelete(route)
   }
 
   render(){
@@ -93,7 +98,7 @@ class EndpointClient extends React.Component {
       },
     }
 
-    const { displayName, environments, routes, selectedEnvironment, selectedRoute } = this.props
+    const { displayName, environments, routes, savedRequests, selectedEnvironment, selectedRoute } = this.props
 
     return(
       <ListGroup style={ styles }>
@@ -142,11 +147,27 @@ class EndpointClient extends React.Component {
                   <RouteNavigation
                     heading={group}
                     routes={ routes[group] }
+                    isSaved={true}
                     onClick={ (route) => this.handleEndpoint(group, route) }
+                    onDelete={this.handleDelete}
                 />
                 </ListCell>
               ) : null
             }
+
+          { savedRequests ? Object.keys(savedRequests)
+            .map((group, i) =>
+              <ListCell key={i} style={styles.listCell}>
+                <RouteNavigation
+                  heading={group}
+                  routes={ routes[group] }
+                  isSaved={ true }
+                  onClick={ (route) => this.handleEndpoint(group, route) }
+                  onDelete={this.handleDelete}
+                />
+              </ListCell>
+            ) : null
+          }
 
         </List>
       </ListGroup>
@@ -157,7 +178,8 @@ class EndpointClient extends React.Component {
 function mapStateToProps(state){
   return{
     ...state.router,
-    ...state.docs
+    ...state.docs,
+    savedRequests: null
   }
 }
 export default connect(mapStateToProps, {
@@ -165,6 +187,7 @@ export default connect(mapStateToProps, {
   loadEnvironment,
   loadRoute,
   resetRequestClient,
-  resetResponseClient
+  resetResponseClient,
+  executeDelete
 })(EndpointClient)
 

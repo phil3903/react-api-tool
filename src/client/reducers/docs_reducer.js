@@ -25,7 +25,7 @@ const modifyPayload =(response)=>{
   return response
 }
 
-const groupRoutes =(response)=>{
+export const groupRoutes =(response)=>{
   const routes = response.routes.reduce((obj, route)=>{
 
     if(!route.group) route.group = 'Other'
@@ -62,6 +62,9 @@ export default function docs( state = initialState, action ) {
         ...state,
         ...modifyPayload(action.response),
       }
+
+    case DOCS.ADD_DOC:
+      return {...state}
     case DOCS.LOAD_ENVIRONMENT:
       return{
         ...state,

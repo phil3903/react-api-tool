@@ -1,7 +1,7 @@
 import { SAVE_REQUEST } from '../actions/save_request_actions'
 
 const initialState = {
-  isModalVisible: true,
+  isModalVisible: false,
   group: '',
   name: ''
 }

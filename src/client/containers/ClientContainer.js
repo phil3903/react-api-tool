@@ -26,6 +26,14 @@ class ClientContainer extends React.Component {
     this.setState({isOverlayVisible: !this.state.isOverlayVisible})
   }
 
+  onDeleteCancel =()=>{
+
+  }
+
+  onDeleteConfirm =()=>{
+
+  }
+
   onSaveConfirm =()=>{
     this.props.executeSave()
     this.clearModalInputs()
