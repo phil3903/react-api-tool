@@ -141,20 +141,6 @@ class EndpointClient extends React.Component {
             </div>
           </ListToolbar>
 
-            { routes ? Object.keys(routes)
-              .map((group, i) =>
-                <ListCell key={i} style={styles.listCell}>
-                  <RouteNavigation
-                    heading={group}
-                    routes={ routes[group] }
-                    isSaved={true}
-                    onClick={ (route) => this.handleEndpoint(group, route) }
-                    onDelete={this.handleDelete}
-                />
-                </ListCell>
-              ) : null
-            }
-
           { savedRequests ? Object.keys(savedRequests)
             .map((group, i) =>
               <ListCell key={i} style={styles.listCell}>
@@ -168,6 +154,19 @@ class EndpointClient extends React.Component {
               </ListCell>
             ) : null
           }
+
+            { routes ? Object.keys(routes)
+              .map((group, i) =>
+                <ListCell key={i} style={styles.listCell}>
+                  <RouteNavigation
+                    heading={group}
+                    routes={ routes[group] }
+                    onClick={ (route) => this.handleEndpoint(group, route) }
+                    onDelete={this.handleDelete}
+                />
+                </ListCell>
+              ) : null
+            }
 
         </List>
       </ListGroup>

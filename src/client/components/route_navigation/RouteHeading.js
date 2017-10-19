@@ -60,7 +60,7 @@ export default class RouteHeading extends React.Component{
         onClick={ onClick }
       >
         <span style={ groupStyles }>
-          { isSaved ? <Icon name={icons.save} size={20} style={ iconStyles }/> : null }
+          { isSaved ? <Icon name={icons.star} size={20} style={ iconStyles }/> : null }
           <span>{heading}</span>
         </span>
 
