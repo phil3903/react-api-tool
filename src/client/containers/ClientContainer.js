@@ -39,17 +39,17 @@ class ClientContainer extends React.Component {
 
   onSaveConfirm =()=>{
     this.props.executeSave()
-    this.clearModalInputs()
+    this.resetModal()
   }
 
   onSaveCancel =()=>{
-    this.props.hideModal()
-    this.clearModalInputs()
+    this.resetModal()
   }
 
-  clearModalInputs =()=>{
+  resetModal =()=>{
     this.props.updateGroupInput('')
     this.props.updateNameInput('')
+    this.props.hideModal()
   }
 
   render(){
