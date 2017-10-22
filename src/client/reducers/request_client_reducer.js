@@ -24,10 +24,16 @@ export default function requestClient( state = initialState, action ) {
       return{...state, urlInput: action.input}
     case REQUEST_CLIENT.UPDATE_URL_METHOD:
       return {...state, urlMethod: action.method}
+
     case REQUEST_CLIENT.UPDATE_JSON_INPUT:
       return{...state,
         jsonInput: action.input
       }
+    case REQUEST_CLIENT.UPDATE_FORM_INPUT_LIST:
+      return {...state,
+        formParameterList: action.input
+      }
+
     case REQUEST_CLIENT.ADD_FORM_PARAMETER:
       return {...state,
         formParameterList: [...state.formParameterList, {key: '', value: ''}]
