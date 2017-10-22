@@ -7,7 +7,7 @@ import { getStyleValue } from '../../helpers/styles'
 import RouteHeading from './RouteHeading'
 import Route from './Route'
 
-export default class RouteNavigation extends React.Component{
+export default class RouteNavigationGroup extends React.Component{
   static propTypes = {
     heading: PropTypes.string,
     routes: PropTypes.array,
@@ -63,7 +63,7 @@ export default class RouteNavigation extends React.Component{
                 method={route.method}
                 isHidden={!this.state.isExpanded}
                 isSaved={this.props.isSaved}
-                onClick={ ()=> this.handleRouteClick(route.name) }
+                onClick={ ()=> this.handleRouteClick(route) }
                 onDelete={ ()=> this.handleRouteDelete(route)}
               />
             )}

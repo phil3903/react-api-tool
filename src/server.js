@@ -3,12 +3,14 @@ const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const morgan = require('morgan')
+const bodyParser = require('body-parser')
 const path = require('path')
 const webpack = require('webpack')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const fs = require('fs')
 const yaml = require('js-yaml')
+const util = require('util')
 
 const STATIC_PATH = path.join(__dirname, 'client')
 const PORT = 8080
@@ -24,6 +26,12 @@ app.use(webpackHotMiddleware(compiler))
 //colorized requests
 app.use(morgan('dev'))
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
 // Disable Caching
 app.use((req, res, next)=>{
   res.header('Cache-Control', 'no-cache')
@@ -31,12 +39,20 @@ app.use((req, res, next)=>{
 })
 
 app.use(express.static(STATIC_PATH))
-const FILE_PATH = path.join(__dirname, 'docs/docs.yaml')
 
-app.get('/api/docs', (req, res, next) => {
-  const file = fs.readFileSync(FILE_PATH, 'utf8')
-  const doc = yaml.safeLoad(file)
-  res.json(doc)
+let profile = {
+  savedRequests: []
+}
+
+app.get('/api/profile', (req, res, next)=>{
+  console.log('GET_PROFILE')
+  console.log(util.inspect(profile, false, null))
+  res.json(profile)
+})
+
+app.put('/api/profile', (req, res, next)=>{
+  profile = req.body
+  res.json(profile)
 })
 
 app.get('/api/fruits', (req, res, next) =>{
@@ -54,7 +70,8 @@ app.get('/api/fruits', (req, res, next) =>{
   })
 })
 
-app.use('/api', (req, res, next) => res.status(404).json({message: 'Route does not exist'}))
+app.use('/api', (req, res, next) =>
+  res.status(404).json({message: 'Route does not exist'}))
 
 //main route
 app.use((req, res, next)=>{
@@ -78,14 +95,6 @@ app.use(function (err, req, res, next) {
   console.log(err, req, res)
   next()
 });
-
-//socket
-const INTERVAL = 3000
-io.on('connection', socket => {
-  console.log('a user connected')
-  setInterval(()=> {socket.emit('event:statusChanged', {status: 1234})}, INTERVAL)
-  socket.on('button:wasClicked', data => console.log(data))
-})
 
 const server = http.listen(PORT, () =>{
   console.log('listening on port 8080')

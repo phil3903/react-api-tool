@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { load } from '../actions/docs_actions'
+import { load as loadDocs } from '../actions/docs_actions'
+import { load as loadProfile } from '../actions/profile_actions'
 import { updateGroupInput, updateNameInput, hideModal} from '../actions/save_request_actions'
 import { executeSave } from '../actions/profile_actions'
 import RequestClient from './RequestClient'
@@ -19,7 +20,9 @@ class ClientContainer extends React.Component {
   }
 
   componentDidMount(){
-    this.props.load()
+    const {loadDocs, loadProfile, docFile} = this.props
+    loadDocs(docFile)
+    loadProfile()
   }
 
   handleNavClick =()=>{
@@ -90,6 +93,7 @@ class ClientContainer extends React.Component {
           onNameChange={this.props.updateNameInput}
           name={this.props.name}
           group={this.props.group}
+          isNameUnique={this.props.isNameUnique}
         />
       </div>
     )
@@ -101,11 +105,13 @@ function mapStateToProps(state){
     docs: state.docs.payload,
     name: state.saveRequest.name,
     group: state.saveRequest.group,
-    isModalVisible: state.saveRequest.isModalVisible
+    isModalVisible: state.saveRequest.isModalVisible,
+    isNameUnique: state.saveRequest.isNameUnique
   }
 }
 export default connect(mapStateToProps, {
-  load,
+  loadDocs,
+  loadProfile,
   updateGroupInput,
   updateNameInput,
   hideModal,

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import auth from './auth_reducer'
 import login from './login_reducer'
+import profile from './profile_reducer'
 import router from './router_reducer'
 import error from './error_reducer'
 import docs from './docs_reducer'
@@ -13,6 +14,7 @@ export default combineReducers({
   auth,
   docs,
   login,
+  profile,
   requestClient,
   responseClient,
   saveRequest,

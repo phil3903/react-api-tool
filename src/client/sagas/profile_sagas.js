@@ -1,8 +1,9 @@
-import { take, takeEvery, put, call, select } from 'redux-saga/effects'
+import { take, call, select } from 'redux-saga/effects'
 import { entityRequest } from './_root_saga'
 import { selectUrl, selectMethod, selectFormParameterList, selectJsonInput } from '../reducers/request_client_reducer'
 import { selectGroup, selectName } from '../reducers/save_request_reducer'
 import { selectProfile } from '../reducers/profile_reducer'
+import { selectRoute } from '../reducers/docs_reducer'
 import * as api from '../services/profile_service'
 import { PROFILE, getProfileEntity, updateProfileEntity} from '../actions/profile_actions'
 import { toSnakeCase } from '../helpers/string'
@@ -17,10 +18,19 @@ export const getProfile = entityRequest.bind(null, getProfileEntity, api.getProf
  * Workers
  */
 
-function* structureRoute(){
-
+function* addSavedRequest(request){
+  let profile = yield select(selectProfile)
+  console.log(profile)
+  const savedRequests = [...profile.savedRequests, request]
+  console.log(savedRequests)
+  yield call(updateProfile, {savedRequests})
 }
 
+function* removeSavedRequest(request){
+  let profile = yield select(selectProfile)
+  profile.savedRequests = profile.savedRequests.filter(r => r.name !== request.name)
+  yield call(updateProfile, profile)
+}
 
 /**
  * Sagas
@@ -30,7 +40,8 @@ function* structureRoute(){
 function *watchProfileRequest(){
   while(true){
     yield take(PROFILE.LOAD)
-    yield call(getProfile)
+    const { response } = yield call(getProfile)
+    console.log(response)
   }
 }
 
@@ -38,29 +49,22 @@ function* watchSaveRequest(){
   while(true) {
     yield take(PROFILE.EXECUTE_SAVE)
 
-    const profile = select(selectProfile)
-
-    const json = yield select(selectJsonInput)
-    const form = yield select(selectFormParameterList)
-    const method = yield select(selectMethod)
-    const endpoint = yield select(selectUrl)
-    const group = yield select(selectGroup)
+    const selectedRoute = yield select(selectRoute)
     const displayName = yield select(selectName)
-
-    // check for duplicates
     const name = toSnakeCase(displayName)
 
     const request = {
       name,
       displayName,
-      method,
-      endpoint,
-      group,
-      json,
-      form
+      doc_reference: selectedRoute.doc_reference,
+      json: yield select(selectJsonInput),
+      form: yield select(selectFormParameterList),
+      method: yield select(selectMethod),
+      endpoint: yield select(selectUrl),
+      group: yield select(selectGroup),
     }
 
-    console.log(request)
+    yield addSavedRequest(request)
   }
 }
 
@@ -69,6 +73,10 @@ function* watchDeleteRequest(){
     const {route} = yield take(PROFILE.EXECUTE_DELETE)
 
     const profile = select(selectProfile)
+
+    console.log(route)
+
+    yield removeSavedRequest(route)
   }
 }
 

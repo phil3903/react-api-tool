@@ -40,6 +40,11 @@ module.exports = () => {
           }
         },
         {
+          test: /\.yaml$/,
+          include: path.resolve('data'),
+          loader: 'yaml',
+        },
+        {
           test: /\.(ico)$/,
           loader: "static-loader"
         },

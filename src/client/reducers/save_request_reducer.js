@@ -3,7 +3,8 @@ import { SAVE_REQUEST } from '../actions/save_request_actions'
 const initialState = {
   isModalVisible: false,
   group: '',
-  name: ''
+  name: '',
+  isNameUnique: true
 }
 
 export default function saveRequest( state = initialState, action ) {
@@ -16,6 +17,8 @@ export default function saveRequest( state = initialState, action ) {
       return {...state, group: action.input}
     case SAVE_REQUEST.UPDATE_NAME_INPUT:
       return {...state, name: action.input}
+    case SAVE_REQUEST.UPDATE_UNIQUE_NAME_VALIDITY:
+      return {...state, isNameUnique: action.isUnique}
     case SAVE_REQUEST.RESET:
       return initialState
     default:

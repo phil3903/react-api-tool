@@ -28,13 +28,13 @@ export const executeDelete =(route)=> action(PROFILE.EXECUTE_DELETE, {route})
  */
 
 export const getProfileEntity = {
-  request: (query) => action(PROFILE.GET_PROFILE.REQUEST),
+  request: () => action(PROFILE.GET_PROFILE.REQUEST),
   success: (response) => action(PROFILE.GET_PROFILE.SUCCESS, {response}),
   failure: (error) => action(PROFILE.GET_PROFILE.FAILURE, {error})
 }
 
 export const updateProfileEntity = {
-  request: (request) => action(PROFILE.UPDATE_PROFILE.REQUEST, {request}),
+  request: (profile) => action(PROFILE.UPDATE_PROFILE.REQUEST, {profile}),
   success: (response) => action(PROFILE.UPDATE_PROFILE.SUCCESS, {response}),
   failure: (error) => action(PROFILE.UPDATE_PROFILE.FAILURE, {error})
 }

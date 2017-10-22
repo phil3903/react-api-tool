@@ -1,7 +1,5 @@
 import fetch from 'isomorphic-fetch'
-import _reduce from 'lodash/reduce'
 import { objectToQueryString, Methods } from './api'
-import * as tokenStorage from '../helpers/tokenStorage'
 
 const API_HEADERS =()=> {
   return {
@@ -12,12 +10,8 @@ const API_HEADERS =()=> {
 
 export const callApi =(endpoint, method, obj)=>{
 
-  console.log(obj)
-
   const queryString = method === Methods.GET ? objectToQueryString(obj): ''
   const fullUrl = endpoint + queryString
-
-  console.log(queryString)
 
   return fetch(fullUrl, {
     credentials: 'include',
@@ -31,11 +25,10 @@ export const callApi =(endpoint, method, obj)=>{
       response.json().then(json => ({json, response}))
     ).then(({json, response}) => {
 
-      if(!response.ok) {
+      if(!response.ok)
         return Promise.reject(json)
-      }
 
-      return ({metadata: response, json})
+      return json
     })
     .then(
       response => ({response}),

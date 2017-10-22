@@ -1,17 +1,12 @@
 import fetch from 'isomorphic-fetch'
 import _reduce from 'lodash/reduce'
-import * as tokenStorage from '../helpers/tokenStorage'
 
 const API_SERVICE_URL = '/api'
 
 const API_HEADERS =()=> {
-  const accessToken = tokenStorage.getToken()
-  const authHeader = accessToken ? {'Authorization': `JWT ${accessToken}`} : null
-
   return {
     'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
     'Content-Type': 'application/json',
-    //...authHeader
   }
 }
 
@@ -47,13 +42,8 @@ export const callApi =(endpoint, method, obj)=>{
       response.json().then(json => ({json, response}))
     ).then(({json, response}) => {
 
-      if(!response.ok) {
-        tokenStorage.invalidateToken(response)
+      if(!response.ok)
         return Promise.reject(json)
-      }
-
-      // set token if present in response
-      tokenStorage.setToken(json)
 
       return json
     })

@@ -12,6 +12,7 @@ export default class SaveRequestModal extends React.Component {
 
   static propTypes = {
     isVisible: PropTypes.bool,
+    isNameUnique: PropTypes.bool,
     onSave: PropTypes.func,
     onCancel: PropTypes.func,
     onGroupChange: PropTypes.func,
@@ -135,7 +136,17 @@ export default class SaveRequestModal extends React.Component {
 
               <div style={styles.group}>
                 <Label text={'Name'}/>
-                <Input value={name} onChange={onNameChange}/>
+                <Input
+                  value={name}
+                  onChange={onNameChange}
+                  validateOnChange
+                  validators={[
+                    {
+                      rule: ()=> this.props.isNameUnique,
+                      errorMessage: "Name is not unique enough."
+                    }
+                  ]}
+                />
               </div>
             </div>
           </div>

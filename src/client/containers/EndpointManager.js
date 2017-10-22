@@ -5,13 +5,15 @@ import Icon from '../components/Icon'
 import icons from '../constants/icons'
 import Toolbar from '../components/Toolbar'
 import Heading from '../components/Heading'
-import RouteNavigation from '../components/route_navigation/RouteNavigation'
+import RouteNavigationGroup from '../components/route_navigation/RouteNavigationGroup'
 import { ListGroup, List, ListCell, ListToolbar, Dropdown, DropdownNode, DropdownOption, DropdownMenu } from 'reactables'
 import colors, {borderColor, secondary} from '../constants/colors'
 import { loadRoute, loadEnvironment } from '../actions/docs_actions'
 import {reset as resetRequestClient} from '../actions/request_client_actions'
 import {reset as resetResponseClient} from '../actions/response_client_actions'
 import { executeDelete } from '../actions/profile_actions'
+import sortBy from 'lodash/sortBy'
+import reverse from 'lodash/reverse'
 
 class EndpointClient extends React.Component {
 
@@ -21,12 +23,12 @@ class EndpointClient extends React.Component {
     loadEnvironment(environment)
   }
 
-  handleEndpoint =(group, endpoint)=>{
+  handleEndpoint =(route)=>{
     const {loadRoute, routes, resetRequestClient, resetResponseClient} = this.props
-    const route = routes[group].find(r => r.name === endpoint )
 
     resetRequestClient()
     resetResponseClient()
+
     loadRoute(route)
   }
 
@@ -49,6 +51,8 @@ class EndpointClient extends React.Component {
         }
       },
       list:{
+        base:{},
+        cells:{overflowY: 'auto'}
       },
       listToolbar: {
         base:{
@@ -98,7 +102,7 @@ class EndpointClient extends React.Component {
       },
     }
 
-    const { displayName, environments, routes, savedRequests, selectedEnvironment, selectedRoute } = this.props
+    const { displayName, environments, routes, groupedRoutes, groupedRequests, selectedEnvironment } = this.props
 
     return(
       <ListGroup style={ styles }>
@@ -141,27 +145,27 @@ class EndpointClient extends React.Component {
             </div>
           </ListToolbar>
 
-          { savedRequests ? Object.keys(savedRequests)
+          {groupedRequests ? Object.keys(groupedRequests)
             .map((group, i) =>
               <ListCell key={i} style={styles.listCell}>
-                <RouteNavigation
+                <RouteNavigationGroup
                   heading={group}
-                  routes={ routes[group] }
+                  routes={ groupedRequests[group] }
                   isSaved={ true }
-                  onClick={ (route) => this.handleEndpoint(group, route) }
+                  onClick={ this.handleEndpoint }
                   onDelete={this.handleDelete}
                 />
               </ListCell>
             ) : null
           }
 
-            { routes ? Object.keys(routes)
+            { groupedRoutes ? Object.keys(groupedRoutes)
               .map((group, i) =>
                 <ListCell key={i} style={styles.listCell}>
-                  <RouteNavigation
+                  <RouteNavigationGroup
                     heading={group}
-                    routes={ routes[group] }
-                    onClick={ (route) => this.handleEndpoint(group, route) }
+                    routes={ groupedRoutes[group] }
+                    onClick={ this.handleEndpoint }
                     onDelete={this.handleDelete}
                 />
                 </ListCell>
@@ -178,7 +182,7 @@ function mapStateToProps(state){
   return{
     ...state.router,
     ...state.docs,
-    savedRequests: null
+    groupedRequests: state.profile.groupedRequests
   }
 }
 export default connect(mapStateToProps, {

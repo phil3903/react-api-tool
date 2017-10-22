@@ -22,7 +22,7 @@ class Content extends React.Component {
                 load={ loadClientContainer }
               >
                 { ClientContainer => ClientContainer
-                  ? <ClientContainer {...props}/> : null
+                  ? <ClientContainer {...props} docFile={this.props.docFile}/> : null
                 }
               </Bundle>
             }
@@ -33,14 +33,14 @@ class Content extends React.Component {
   }
 }
 
-Content = withMediaQueries(Content, {
-  lg: 1030,
-  md: 991,
-  sm: 885,
-  xl: 1440,
-  xs: 414,
-  xxl: Infinity
-})
+// Content = withMediaQueries(Content, {
+//   lg: 1030,
+//   md: 991,
+//   sm: 885,
+//   xl: 1440,
+//   xs: 414,
+//   xxl: Infinity
+// })
 
 function mapStateToProps(state){
   return{

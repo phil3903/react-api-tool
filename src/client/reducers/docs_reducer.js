@@ -1,36 +1,31 @@
 import { DOCS } from '../actions/docs_actions'
 import sortBy from 'lodash/sortBy'
 import reverse from 'lodash/reverse'
+import merge from 'lodash.merge'
 import get from 'lodash/get'
 
 const initialState = {
   selectedRoute: {},
-  selectedEnvironment: {}
+  selectedEnvironment: {},
+  groupedRoutes: {}
 }
 
-// const mapEndpointMethods = (response) =>{
-//   let routes = []
-//   return {
-//     ...response,
-//     allRoutes: Object
-//       .keys(response.routes)
-//       .reduce((arr, method) =>
-//         [...arr, ...response.routes[method].map(endpoint => ({...endpoint, method})) ] , routes )
-//   }
-// }
-
-const modifyPayload =(response)=>{
-  response = groupRoutes(response)
-  response = setBaseUrl(response)
-  return response
+const modifyPayload =(docs)=>{
+  docs.routes = docs.routes.map(route => ({...route, doc_reference: route.name}))
+  docs = setBaseUrl(docs)
+  return docs
 }
 
-export const groupRoutes =(response)=>{
-  const routes = response.routes.reduce((obj, route)=>{
+export const groupRoutes =(routes)=>{
+  if(!routes || !routes.length) return []
+  const groupedRoutes = routes.reduce((obj, route)=>{
 
     if(!route.group) route.group = 'Other'
     if(!obj[route.group]) obj[route.group] = []
+
     obj[route.group] = [...obj[route.group], route]
+
+
     return obj
   }, {})
 
@@ -39,12 +34,11 @@ export const groupRoutes =(response)=>{
     reverse(routes[group])
   }
 
-  response.routes = routes
-  return response
+  return groupedRoutes
 }
 
-const setBaseUrl =(response)=>{
-  response.environments.map(environment =>{
+const setBaseUrl =(docs)=>{
+  docs.environments.map(environment =>{
     const PREFIX = get(environment, 'ssl') ? 'https://' : 'http://'
     const URL = get(environment, 'url', '')
     const BASE = get(environment, 'base') ? '/' + environment.base : ''
@@ -52,16 +46,15 @@ const setBaseUrl =(response)=>{
     environment.fullUrl = `${PREFIX}${URL}${PORT}${BASE}`
   })
 
-  return response
+  return docs
 }
 
 export default function docs( state = initialState, action ) {
   switch(action.type){
-    case DOCS.GET_DOCS.SUCCESS:
-      return {
-        ...state,
-        ...modifyPayload(action.response),
-      }
+    case DOCS.LOAD:
+      const docs = modifyPayload(action.docs)
+      const groupedRoutes = groupRoutes(docs.routes)
+      return {...state, ...docs, groupedRoutes}
 
     case DOCS.ADD_DOC:
       return {...state}
@@ -71,10 +64,9 @@ export default function docs( state = initialState, action ) {
         selectedEnvironment: action.environment
       }
     case DOCS.LOAD_ROUTE:
-      return {
-        ...state,
-        selectedRoute: action.route
-      }
+      const referenceRoute = state.routes.find(route => route.name === action.route.doc_reference)
+      const selectedRoute = merge({}, referenceRoute, action.route)
+      return {...state, selectedRoute}
     case DOCS.RESET:
       return initialState
     default:

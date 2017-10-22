@@ -38,7 +38,7 @@ class App extends React.Component {
                 render={ props =>
                   <Bundle load={ loadContent }>
                     { Content => Content
-                      ? <Content {...props}/> : null
+                      ? <Content {...props} docFile={this.props.docFile}/> : null
                     }
                   </Bundle>
                 }
@@ -55,5 +55,5 @@ class App extends React.Component {
 
 function mapStateToProps(state){ return {} }
 export default connect(mapStateToProps, {
-  updateRouterContext,
+  updateRouterContext
 })(App)

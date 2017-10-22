@@ -11,6 +11,7 @@ export const DOCS = prefixActionTypes('DOCS',[
  * Action Creators
  */
 
+export const load =(docs)=> action(DOCS.LOAD, {docs})
 export const loadEnvironment =(environment)=> action(DOCS.LOAD_ENVIRONMENT, {environment})
 export const loadRoute =(route)=> action(DOCS.LOAD_ROUTE, {route})
 
@@ -18,8 +19,6 @@ export const loadRoute =(route)=> action(DOCS.LOAD_ROUTE, {route})
 /**
  * Saga Triggers
  */
-
-export const load =()=> action(DOCS.LOAD)
 
 /**
  * Saga Entity Requests
