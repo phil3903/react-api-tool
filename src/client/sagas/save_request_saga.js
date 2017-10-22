@@ -10,11 +10,8 @@ import {selectSavedRequestNames} from '../reducers/profile_reducer'
 function* validateUniqueName(action){
   const input = toSnakeCase(action.input)
   const names = yield select(selectSavedRequestNames)
-
-  const isUnique = names.length
-    ? names.some(name => name !== input)
-    : true
-  yield put(updateUniqueNameValidity(isUnique))
+  const isNameUsed = names.some(name => name === input)
+  yield put(updateUniqueNameValidity(!isNameUsed))
 }
 
 /**

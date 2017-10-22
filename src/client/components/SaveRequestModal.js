@@ -158,7 +158,7 @@ export default class SaveRequestModal extends React.Component {
             />
             <Button
               text="Save"
-              isDisabled={ !group || !name }
+              isDisabled={ !group || !name || !this.props.isNameUnique }
               onClick={onSave}
               style={styles.saveButton}
             />
