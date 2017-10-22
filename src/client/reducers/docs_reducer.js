@@ -10,8 +10,20 @@ const initialState = {
   groupedRoutes: {}
 }
 
+export const removeEndpointSlash =(endpoint)=>{
+  if(!endpoint) return ''
+  return endpoint.charAt(0) === '/'
+    ? endpoint.substring(1)
+    : endpoint
+}
+
 const modifyPayload =(docs)=>{
-  docs.routes = docs.routes.map(route => ({...route, doc_reference: route.name}))
+  docs.routes = docs.routes.map(route => ({
+    ...route,
+    doc_reference: route.name,
+    doc_display_name: route.displayName,
+    endpoint: removeEndpointSlash(route.endpoint)
+  }))
   docs = setBaseUrl(docs)
   return docs
 }

@@ -20,9 +20,7 @@ export const getProfile = entityRequest.bind(null, getProfileEntity, api.getProf
 
 function* addSavedRequest(request){
   let profile = yield select(selectProfile)
-  console.log(profile)
   const savedRequests = [...profile.savedRequests, request]
-  console.log(savedRequests)
   yield call(updateProfile, {savedRequests})
 }
 
@@ -40,8 +38,7 @@ function* removeSavedRequest(request){
 function *watchProfileRequest(){
   while(true){
     yield take(PROFILE.LOAD)
-    const { response } = yield call(getProfile)
-    console.log(response)
+    yield call(getProfile)
   }
 }
 
@@ -71,11 +68,6 @@ function* watchSaveRequest(){
 function* watchDeleteRequest(){
   while(true){
     const {route} = yield take(PROFILE.EXECUTE_DELETE)
-
-    const profile = select(selectProfile)
-
-    console.log(route)
-
     yield removeSavedRequest(route)
   }
 }

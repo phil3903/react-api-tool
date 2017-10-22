@@ -3,7 +3,7 @@ import sortBy from 'lodash/sortBy'
 import reverse from 'lodash/reverse'
 import merge from 'lodash.merge'
 import get from 'lodash/get'
-import { groupRoutes } from './docs_reducer'
+import { groupRoutes, removeEndpointSlash } from './docs_reducer'
 
 const initialState = {
   payload: {
@@ -11,43 +11,27 @@ const initialState = {
   }
 }
 
-// export const groupRoutes =(routes)=>{
-//   if(!routes || !routes.length) return []
-//   const groupedRoutes = routes.reduce((obj, route)=>{
-//
-//     console.log(route, obj)
-//
-//     if(!route.group) route.group = 'Other'
-//     if(!obj[route.group]) obj[route.group] = []
-//
-//     obj[route.group] = [...obj[route.group], route]
-//
-//     console.log(obj)
-//
-//     return obj
-//   }, {})
-//
-//   for(const group of Object.keys(routes)){
-//     sortBy(routes[group], ['method', 'displayName'])
-//     reverse(routes[group])
-//   }
-//
-//   return groupedRoutes
-// }
+const modifyRequests =(requests)=>{
+  return requests.map(req => ({...req, endpoint: removeEndpointSlash(req.endpoint)})) || []
+}
 
 export default function profile( state = initialState, action ) {
   switch(action.type){
     case PROFILE.GET_PROFILE.SUCCESS:
+
+      const savedRequests = modifyRequests(action.response.json.savedRequests)
+
       return {
         ...state,
-        payload: action.response,
-        groupedRequests: groupRoutes(action.response.savedRequests)
+        payload: {savedRequests},
+        groupedRequests: groupRoutes(savedRequests)
       }
     case PROFILE.UPDATE_PROFILE.SUCCESS:
+      const updatedRequests = modifyRequests(action.response.json.savedRequests)
       return {
         ...state,
-        payload: action.response,
-        groupedRequests: groupRoutes(action.response.savedRequests)
+        payload: {savedRequests: updatedRequests},
+        groupedRequests: groupRoutes(updatedRequests)
       }
     case PROFILE.RESET:
       return initialState

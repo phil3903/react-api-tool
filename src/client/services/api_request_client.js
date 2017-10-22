@@ -9,7 +9,6 @@ const API_HEADERS =()=> {
 }
 
 export const callApi =(endpoint, method, obj)=>{
-
   const queryString = method === Methods.GET ? objectToQueryString(obj): ''
   const fullUrl = endpoint + queryString
 
@@ -25,10 +24,11 @@ export const callApi =(endpoint, method, obj)=>{
       response.json().then(json => ({json, response}))
     ).then(({json, response}) => {
 
-      if(!response.ok)
+      if(!response.ok) {
         return Promise.reject(json)
+      }
 
-      return json
+      return ({metadata: response, json})
     })
     .then(
       response => ({response}),

@@ -90,7 +90,7 @@ export default class ExportWizard extends React.Component {
       <div style={ styles.base }>
         <Wizard
           style={styles.wizard}
-          shouldShowTimeline={false}
+          shouldShowTimeline={true}
           animationDuration={500}
           completeText={'Export'}
         >
