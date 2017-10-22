@@ -54,6 +54,7 @@ function* watchSaveRequest(){
       name,
       displayName,
       doc_reference: selectedRoute.doc_reference,
+      doc_display_name: selectedRoute.displayName,
       json: yield select(selectJsonInput),
       form: yield select(selectFormParameterList),
       method: yield select(selectMethod),
