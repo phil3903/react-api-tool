@@ -91,7 +91,13 @@ class Docs extends React.Component {
         />
         <div style={ styles.body }>
           <header style={styles.header}>
-            <Heading size={3} text={route.doc_display_name || route.displayName} style={ styles.displayName }/>
+            <Heading
+              size={3}
+              text={ route.doc_display_name
+                ? `${route.doc_display_name} ${ route.doc_display_name !== route.displayName ? `(${route.displayName})` : '' }`
+                : ''}
+              style={ styles.displayName }
+            />
             <Heading size={3} text={ route.endpoint ? `${route.method.toUpperCase()}  /${route.endpoint}` : '' }/>
           </header>
           <section style={styles.section}>
