@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Transition from 'react-transition-group/Transition'
-import get from 'lodash.get'
+import { secondary } from "../../constants/colors";
 
 
 export default class Expand extends React.Component {
@@ -41,7 +41,7 @@ export default class Expand extends React.Component {
     const { shouldAnimate, appear, children, staggerTime, duration, height} = this.props
 
     //const height = get(children, `props.style.height`)
-    const styles = {transition: `height ${duration}ms`, overflow: 'hidden'}
+    const styles = {transition: `height ${duration}ms`, overflow: 'hidden', backgroundColor: secondary}
     const timeout = {enter: staggerTime, exit: staggerTime}
     const transitionStyles = {
       entering: {height: 0},

@@ -51,7 +51,7 @@ class EndpointClient extends React.Component {
         }
       },
       list:{
-        base:{},
+        base:{backgroundColor: secondary},
         cells:{overflowY: 'auto'}
       },
       listToolbar: {
