@@ -80,7 +80,7 @@ app.use((req, res, next)=>{
     <html lang="en">
     <head>
       <meta charset="UTF-8">
-      <title>Dev Template</title>
+      <title>API Tool</title>
       <link href="./vendor/favicon.ico"
     </head>
     <body>

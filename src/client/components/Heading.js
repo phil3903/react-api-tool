@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import merge from 'lodash/merge'
-import colors from '../constants/colors'
 
 const Heading =({size, text, onClick, style})=> {
   const sizes = {
@@ -27,7 +26,7 @@ const Heading =({size, text, onClick, style})=> {
 
 Heading.propTypes = {
   size: PropTypes.oneOf([1,2,3, 4]).isRequired,
-  text: PropTypes.string,
+  text: PropTypes.any,
   style: PropTypes.object,
   onClick: PropTypes.func
 }

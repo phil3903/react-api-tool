@@ -1,5 +1,7 @@
 import lineNumbers from 'line-numbers'
 import get from 'lodash/get'
+import uniq from 'lodash/uniq'
+import json2csv from 'json2csv'
 import { RESPONSE_CLIENT } from '../actions/response_client_actions'
 import { REQUEST_CLIENT } from '../actions/request_client_actions'
 
@@ -19,12 +21,28 @@ export default function docs( state = initialState, action ) {
      */
     case REQUEST_CLIENT.SEND_REQUEST.SUCCESS:
 
-      const payload = action.response.json
+      const data = action.response.json
+      const paths = getPaths(data)
+
+      console.log(data)
+      console.log(paths)
+
+      const fields = paths.map(value => {
+        const pathComponents = value.split('.')
+        const label = pathComponents[pathComponents.length - 1]
+        return {label, value, default: 'broken'}
+      })
+
+      const csv = json2csv({data, fields})
+
+      console.log(csv)
+
+
       return {
         ...state,
-        payload,
+        payload: data,
         statusCode: get(action.response, 'metadata.status', 'Success'),
-        clientResponse: lineNumbers(JSON.stringify(payload, null, 2))
+        clientResponse: lineNumbers(JSON.stringify(data, null, 2))
       }
     case REQUEST_CLIENT.SEND_REQUEST.FAILURE:
       const requestError = get(action, 'error.message', action.error)
@@ -44,17 +62,38 @@ export default function docs( state = initialState, action ) {
 
     case RESPONSE_CLIENT.UPDATE_RESPONSE_TIME:
       return {...state, responseTime: action.responseTime }
-
-
     case RESPONSE_CLIENT.SET_EXPORT_FORMAT:
       return {...state, exportFormat: action.format}
-
-    
-
     case RESPONSE_CLIENT.RESET:
       return initialState
 
     default:
       return state
   }
+}
+
+const getPaths = (payload) =>{
+  let paths = []
+  const walk =(obj,path)=>{
+
+    path = path || ""
+
+    for(let n in obj){
+      if (obj.hasOwnProperty(n)) {
+        if(Array.isArray(obj[n])){
+          walk(obj[n], path + "." + n)
+        }
+        else if(typeof obj[n] === "object") {
+          console.log(n)
+          walk(obj[n], path + "." + n)
+        }
+        else {
+          paths.push(path + "." + n)
+        }
+      }
+    }
+  }
+  walk(payload, "")
+  paths = uniq(paths.map(path => path.substring(1)))
+  return paths
 }

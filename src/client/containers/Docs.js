@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Table, Th, Td } from 'reactables'
-import colors, { secondary } from '../constants/colors'
+import get from 'lodash/get'
+import { Table, Th, Td, TextField } from 'reactables'
+import colors, { secondary, secondaryHover, white } from '../constants/colors'
 import Toolbar from '../components/Toolbar'
 import Heading from '../components/Heading'
 
@@ -80,6 +81,14 @@ class Docs extends React.Component {
             padding: 15,
           }
         }
+      },
+      example:{
+        backgroundColor: secondaryHover,
+        color: white,
+        whiteSpace: 'pre-wrap',
+        padding: 10,
+        margin: 0,
+        borderRadius: 2,
       }
     }
 
@@ -129,32 +138,57 @@ class Docs extends React.Component {
             </header> : null }
 
           {route.name && (route.body || route.params) ?
-            <Table
-              isStriped
-              style={ styles.parameters }
-              data={ route.body || route.params }
-              columnConfig={[
-                {
-                  key: 'name',
-                  isSortable: false,
-                  renderCell: (data, column, rowIndex, style) =>
-                    <Td style={{...style, base:{fontFamily: 'Lato-Regular'}}} value={data}/>
-                },
-                {
-                  key: 'default',
-                  isSortable: false,
-                  renderCell: (data, column, rowIndex, style) =>
-                    <Td style={ style} value={data || 'null'}/>
-                },
-                {
-                  key: 'description',
-                  isSortable: false,
-                  renderCell: (data, column, rowIndex, style) =>
-                    <Td style={ style } value={data}/>
-                }
-              ]}
-            />
+            <section style={styles.section}>
+              <Table
+                isStriped
+                style={ styles.parameters }
+                data={ route.body || route.params }
+                columnConfig={[
+                  {
+                    key: 'name',
+                    isSortable: false,
+                    renderCell: (data, column, rowIndex, style) =>
+                      <Td style={{...style, base:{fontFamily: 'Lato-Regular'}}} value={data}/>
+                  },
+                  {
+                    key: 'default',
+                    isSortable: false,
+                    renderCell: (data, column, rowIndex, style) =>
+                      <Td style={ style} value={data || 'null'}/>
+                  },
+                  {
+                    key: 'description',
+                    isSortable: false,
+                    renderCell: (data, column, rowIndex, style) =>
+                      <Td style={ style } value={data}/>
+                  }
+                ]}
+              />
+            </section>
             : null }
+
+          { get(route, 'example') ?
+            <header style={styles.header}>
+              <Heading size={3} text={'Example'}/>
+            </header> : null }
+
+
+          { get(route, 'example.description') ?
+            <div>
+              <section style={styles.section}>
+                <p style={ styles.description }>{ route.example.description }</p>
+              </section>
+              <section style={styles.section}>
+                <p style={ styles.example }>
+                  { route.example.value }
+                </p>
+              </section>
+            </div>
+
+              : null
+          }
+
+
         </div>
       </div>
     )

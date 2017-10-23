@@ -118,7 +118,10 @@ class ResponseClient extends React.Component {
               style={ styles.textField }
             /> : null }
 
-          { subnav === 'export' ? <ExportWizard/> : null }
+          { subnav === 'export'
+            ? <ExportWizard/>
+            : null
+          }
 
         </div>
       </div>

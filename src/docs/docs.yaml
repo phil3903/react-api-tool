@@ -83,6 +83,13 @@ routes:
     endpoint: fruits
     description: >
       Returns all fruit present in the database.
+    example:
+      description: This is where an example description would go.
+      value: |
+        {
+          "page": 1,
+          "limit": 10
+        }
 
     params:
       - name: page
