@@ -14,6 +14,33 @@ const initialState = {
   clientResponse: ''
 }
 
+const getPaths = (payload) => {
+  let paths = []
+  const walk = function (obj, path) {
+    path = path || ""
+    for (let key in obj) {
+      const value = obj[key]
+
+      if(Array.isArray(value)){
+        walk(value, path + '.' + key)
+      }
+      else if(typeof value === 'object' && !Array.isArray(value)) {
+        const append = Array.isArray(obj) ? '' : '.' + key
+        walk(value, path + append)
+      }
+      const append = Array.isArray(obj) ? '' : '.' + key
+      paths.push(path + append)
+    }
+  }
+
+  walk(payload, "")
+
+  console.log(paths)
+  return uniq(paths.map(path => path.substring(1)))
+}
+
+
+
 export default function docs( state = initialState, action ) {
   switch(action.type){
     /**
@@ -27,13 +54,10 @@ export default function docs( state = initialState, action ) {
       const fields = paths.map(value => {
         const pathComponents = value.split('.')
         const label = pathComponents[pathComponents.length - 1]
-        return {label, value, default: 'broken'}
+        return {label, value}
       })
 
-      const csv = json2csv({data, fields})
-
-      console.log(csv)
-
+      console.log(fields)
 
       return {
         ...state,
@@ -69,22 +93,3 @@ export default function docs( state = initialState, action ) {
   }
 }
 
-const getPaths = (payload) =>{
-  let paths = []
-  const walk = function(obj, path){
-
-    path = path || ""
-
-    for(let n in obj){
-      if (obj.hasOwnProperty(n)) {
-
-        if(typeof obj[n] === "object" || Array.isArray(obj[n]))
-          walk(obj[n], path + "." + n)
-
-        paths.push(path + "." + n)
-      }
-    }
-  }
-  walk(payload, "")
-  return uniq(paths.map(path => path.substring(1)))
-}
