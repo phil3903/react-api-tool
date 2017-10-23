@@ -24,9 +24,6 @@ export default function docs( state = initialState, action ) {
       const data = action.response.json
       const paths = getPaths(data)
 
-      console.log(data)
-      console.log(paths)
-
       const fields = paths.map(value => {
         const pathComponents = value.split('.')
         const label = pathComponents[pathComponents.length - 1]
@@ -74,26 +71,20 @@ export default function docs( state = initialState, action ) {
 
 const getPaths = (payload) =>{
   let paths = []
-  const walk =(obj,path)=>{
+  const walk = function(obj, path){
 
     path = path || ""
 
     for(let n in obj){
       if (obj.hasOwnProperty(n)) {
-        if(Array.isArray(obj[n])){
+
+        if(typeof obj[n] === "object" || Array.isArray(obj[n]))
           walk(obj[n], path + "." + n)
-        }
-        else if(typeof obj[n] === "object") {
-          console.log(n)
-          walk(obj[n], path + "." + n)
-        }
-        else {
-          paths.push(path + "." + n)
-        }
+
+        paths.push(path + "." + n)
       }
     }
   }
   walk(payload, "")
-  paths = uniq(paths.map(path => path.substring(1)))
-  return paths
+  return uniq(paths.map(path => path.substring(1)))
 }
