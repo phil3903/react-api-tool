@@ -37,7 +37,7 @@ class Docs extends React.Component {
       description: {
         padding: 15,
         margin: 0,
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: 200,
         backgroundColor: secondary,
         borderRadius: 2
@@ -75,11 +75,20 @@ class Docs extends React.Component {
         td:{
           base: {
             border: 'none',
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: 300,
             padding: 15,
           }
         }
+      }
+    }
+
+    const textStyles = {
+      method: {
+        get: {color: colors.green[500]},
+        post: {color: colors.purple[500]},
+        put: {color: colors.blue[500]},
+        delete: {color: colors.red[500]}
       }
     }
 
@@ -98,16 +107,28 @@ class Docs extends React.Component {
                 : ''}
               style={ styles.displayName }
             />
-            <Heading size={3} text={ route.endpoint ? `${route.method.toUpperCase()}  /${route.endpoint}` : '' }/>
+            <Heading
+              size={3}
+              text={ route.endpoint
+                ? <span>
+                    <span style={textStyles.method[route.method]}>
+                      {route.method.toUpperCase()}
+                    </span> /{route.endpoint}
+                  </span>
+                : ''
+              }
+            />
           </header>
           <section style={styles.section}>
             <p style={ styles.description }>{ route.description }</p>
           </section>
-          <header style={styles.header}>
-            <Heading size={3} text={'Parameters'}/>
-          </header>
 
-          {route.name ?
+          { route.body || route.params ?
+            <header style={styles.header}>
+              <Heading size={3} text={'Parameters'}/>
+            </header> : null }
+
+          {route.name && (route.body || route.params) ?
             <Table
               isStriped
               style={ styles.parameters }
@@ -115,13 +136,19 @@ class Docs extends React.Component {
               columnConfig={[
                 {
                   key: 'name',
-                  renderHeading: () => <Th style={{base: {display: 'none'}}}/>,
+                  isSortable: false,
                   renderCell: (data, column, rowIndex, style) =>
-                    <Td style={{...style, base:{fontWeight: 500}}} value={data}/>
+                    <Td style={{...style, base:{fontFamily: 'Lato-Regular'}}} value={data}/>
+                },
+                {
+                  key: 'default',
+                  isSortable: false,
+                  renderCell: (data, column, rowIndex, style) =>
+                    <Td style={ style} value={data || 'null'}/>
                 },
                 {
                   key: 'description',
-                  renderHeading: () => <Th style={{base:{display: 'none'}}}/>,
+                  isSortable: false,
                   renderCell: (data, column, rowIndex, style) =>
                     <Td style={ style } value={data}/>
                 }
