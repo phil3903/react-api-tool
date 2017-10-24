@@ -5,7 +5,6 @@ export const RESPONSE_CLIENT = prefixActionTypes('RESPONSE_CLIENT',[
   'RESET',
   'POPULATE',
   'UPDATE_RESPONSE_TIME',
-  'SET_EXPORT_FORMAT',
   'SET_SUBNAV'
 ])
 
@@ -15,7 +14,6 @@ export const RESPONSE_CLIENT = prefixActionTypes('RESPONSE_CLIENT',[
 
 export const reset =()=> action(RESPONSE_CLIENT.RESET)
 export const updateResponseTime =(responseTime) => action(RESPONSE_CLIENT.UPDATE_RESPONSE_TIME, {responseTime})
-export const setExportFormat =(value, display)=> action(RESPONSE_CLIENT.SET_EXPORT_FORMAT, {value, display})
 export const setSubnav =(subnav)=> action(RESPONSE_CLIENT.SET_SUBNAV, {subnav})
 
 

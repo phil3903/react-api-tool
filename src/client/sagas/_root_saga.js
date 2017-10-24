@@ -5,6 +5,7 @@ import { docsSaga } from './docs_saga'
 import { requestClientSagas } from './request_client_saga'
 import { profileSagas } from './profile_sagas'
 import { saveRequestSagas } from './save_request_saga'
+import { exportResponseSagas } from './export_response_saga'
 
 export function* entityRequest(entity, apiFunc, ...args) {
   yield put( entity.request(...args) )
@@ -23,6 +24,7 @@ export default function* root(){
     ...docsSaga.map(saga => fork(saga)),
     ...requestClientSagas.map(saga => fork(saga)),
     ...profileSagas.map(saga => fork(saga)),
-    ...saveRequestSagas.map(saga => fork(saga))
+    ...saveRequestSagas.map(saga => fork(saga)),
+    ...exportResponseSagas.map(saga => fork(saga))
   ])
 }

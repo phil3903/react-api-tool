@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Wizard, WizardStep, Select, SelectOption, TextField } from 'reactables'
+import get from 'lodash/get'
+import { Wizard, WizardStep, Select, SelectOption, TextField, Button } from 'reactables'
 import ParameterInput from './ParameterInput'
 import colors, { secondary } from '../constants/colors'
 
@@ -24,6 +25,20 @@ export default class ExportWizard extends React.Component {
   }
 
   render(){
+
+    const {
+      format,
+      columns,
+      paths,
+      fileName,
+      updateFormat,
+      addColumn,
+      deleteColumn,
+      updateColumnKey,
+      updateColumnValue,
+      updateFileNameInput,
+      executeExport
+    } = this.props
 
     const styles = {
       base:{
@@ -64,6 +79,9 @@ export default class ExportWizard extends React.Component {
       },
       wizardStep:{
         base:{
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '20px 10px',
           backgroundColor: colors.blueGrey[900],
         }
       },
@@ -85,14 +103,29 @@ export default class ExportWizard extends React.Component {
           }
         }
       },
+      addButton:{
+        base:{
+          alignSelf: 'flex-end',
+          padding: 0,
+          margin: 0,
+          fontSize: 14,
+          backgroundColor: 'transparent',
+          color: colors.white
+        },
+        hovered:{
+          color: colors.yellow[600],
+          backgroundColor: 'transparent',
+        }
+      }
     }
     return(
       <div style={ styles.base }>
         <Wizard
           style={styles.wizard}
-          shouldShowTimeline={true}
+          shouldShowTimeline={false}
           animationDuration={500}
           completeText={'Export'}
+          onComplete={executeExport}
         >
           <WizardStep
             name={'format'}
@@ -101,7 +134,8 @@ export default class ExportWizard extends React.Component {
           >
             <Select
               placeholder={'Select Format'}
-              onChange={()=>{}}
+              onChange={updateFormat}
+              value={format}
             >
               <SelectOption value={'json'} text={'JSON'}/>
               <SelectOption value={'csv'} text={'CSV'}/>
@@ -109,14 +143,30 @@ export default class ExportWizard extends React.Component {
           </WizardStep>
 
           <WizardStep name={'fields'} title={'Fields'} style={styles.wizardStep}>
-            <ParameterInput/>
-          </WizardStep>
-
-          <WizardStep name={'name'} title={'Name'} style={styles.wizardStep}>
-            <TextField
-              style={styles.textField}
-              placeholder={'File Name'}
-            />
+            {columns.map((item, i) =>
+              <ParameterInput
+                key={i}
+                index={i}
+                listLength={columns.length}
+                keyOptions={paths}
+                param={item.key}
+                value={item.value}
+                onValueUpdate={updateColumnValue}
+                onKeyUpdate={updateColumnKey}
+                onDelete={deleteColumn}
+                onAdd={addColumn}
+              />
+            )}
+            {
+              get(columns[columns.length - 1], 'value.length', {})
+                ?
+                <Button
+                  text={'Add Another'}
+                  style={styles.addButton}
+                  onClick={ addColumn }
+                />
+                : null
+            }
           </WizardStep>
         </Wizard>
       </div>

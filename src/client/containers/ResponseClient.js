@@ -14,6 +14,7 @@ import shadows from '../constants/shadows'
 import icons from '../constants/icons'
 import * as fileExporter from '../services/file_exporter'
 import * as responseActions from '../actions/response_client_actions'
+import * as exportActions from '../actions/export_response_actions'
 
 class ResponseClient extends React.Component {
   static propTypes = {
@@ -119,7 +120,19 @@ class ResponseClient extends React.Component {
             /> : null }
 
           { subnav === 'export'
-            ? <ExportWizard/>
+            ? <ExportWizard
+                format={this.props.exportFormat}
+                columns={this.props.exportColumns}
+                paths={this.props.exportPaths}
+                fileName={this.props.exportFileName}
+                updateFormat={this.props.updateExportFormat}
+                addColumn={this.props.addColumn}
+                deleteColumn={this.props.deleteColumn}
+                updateColumnKey={this.props.updateColumnKey}
+                updateColumnValue={this.props.updateColumnValue}
+                updateFileNameInput={this.props.updateFileNameInput}
+                executeExport={this.props.executeExportResponse}
+            />
             : null
           }
 
@@ -133,10 +146,21 @@ class ResponseClient extends React.Component {
 function mapStateToProps(state){
   return{
     ...state.router,
-    ...state.responseClient
+    ...state.responseClient,
+    exportFormat: state.exportResponse.format,
+    exportColumns: state.exportResponse.columns,
+    exportFileName: state.exportResponse.fileName,
+    exportPaths: state.responseClient.paths
   }
 }
 export default connect(mapStateToProps, {
-  setExportFormat: responseActions.setExportFormat,
-  setSubnav: responseActions.setSubnav
+  setSubnav: responseActions.setSubnav,
+  updateExportFormat: exportActions.updateFormat,
+  addColumn: exportActions.addColumn,
+  deleteColumn: exportActions.deleteColumn,
+  updateColumnKey: exportActions.updateColumnKey,
+  updateColumnValue: exportActions.updateColumnValue,
+  updateFileNameInput: exportActions.updateFileNameInput,
+  executeExportResponse: exportActions.executeExportResponse,
+
 })(ResponseClient)
