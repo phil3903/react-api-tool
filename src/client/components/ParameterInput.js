@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button, Dropdown, DropdownNode, DropdownMenu, DropdownOption, TextField } from 'reactables'
+import { Button, Dropdown, DropdownNode, DropdownMenu, DropdownOption, SelectOption, Select } from 'reactables'
 import icons from '../constants/icons'
 import colors, {highlight, secondary} from '../constants/colors'
 import shadows from '../constants/shadows'
@@ -18,32 +18,37 @@ const ParameterInput =(
       width: '100%',
       marginBottom: 30
     },
-    dropdownNode:{
+    select:{
       base:{
         display: 'flex',
         justifyContent: 'space-between',
         width: 150,
         marginRight: 10,
         backgroundColor: 'transparent',
-        borderBottom: `1px solid ${secondary}`,
+        borderRight: 'none',
+        borderLeft: 'none',
+        borderTop: 'none',
+        borderBottom: `1px solid`,
+        WebkitBorderRadius: 0,
+        WebkitAppearance: 'none',
+        borderColor: secondary,
         color: colors.white,
-        borderRadius: 0,
         height: 40,
         fontSize: 16,
       },
       active:{
-        borderBottom: `1px solid ${highlight}`,
-      }
-    },
-    dropdownMenu:{
-      base:{
-        boxShadow: shadows.two,
-        borderRadius: 2
-      }
-    },
-    dropdownOption:{
-      base:{
-        color: colors.black
+        borderColor: secondary
+      },
+      focused:{
+        borderColor: highlight
+      },
+      blur:{
+        borderColor: secondary,
+      },
+      disabled: {
+        borderColor: secondary,
+        borderBottom: `1px solid ${secondary}`,
+        WebkitAppearance: 'none'
       }
     },
     deleteContainer:{
@@ -73,22 +78,23 @@ const ParameterInput =(
 
   return(
     <div style={ styles.base }>
-      <Dropdown>
-        <DropdownNode style={ styles.dropdownNode }>
-          { param || 'Parameter' } <Icon name={icons.arrow_drop_down}/>
-        </DropdownNode>
-        <DropdownMenu>
-          {keyOptions ? keyOptions.map(option =>
-            <DropdownOption
-              style={ styles.dropdownOption }
-              key={option}
-              text={option}
-              value={option}
-              onClick={ (value)=> onKeyUpdate(index, value) }
-            />
-          ) : null}
-        </DropdownMenu>
-      </Dropdown>
+
+      <Select
+        style={styles.select}
+        onChange={(value)=> onKeyUpdate(index, value)}
+        value={ param }
+        placeholder={'Parameter'}
+        isDisabled={ !keyOptions.length }
+      >
+        {keyOptions ? keyOptions.map(option =>
+          <SelectOption
+            style={ styles.dropdownOption }
+            key={option}
+            text={option}
+            value={option}
+          />
+        ) : null}
+      </Select>
       <Input
         autoFocus
         placeholder={'value'}

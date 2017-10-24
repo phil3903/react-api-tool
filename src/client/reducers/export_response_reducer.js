@@ -3,7 +3,6 @@ import { EXPORT_RESPONSE } from '../actions/export_response_actions'
 const initialState = {
   format: '',
   columns: [{key: '', value: ''}],
-  fileName: '',
 }
 
 
@@ -39,8 +38,6 @@ export default function exportResponse( state = initialState, action ) {
           ...state.columns.slice(action.index + 1)
         ]
       }
-    case EXPORT_RESPONSE.UPDATE_FILE_NAME_INPUT:
-      return {...state, fileName: action.input}
 
     default:
       return state

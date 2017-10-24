@@ -39,7 +39,7 @@
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-transition-group": "^2.2.1",
-    "reactables": "^3.0.0-beta.28",
+    "reactables": "^3.0.0-beta.30",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.15.6",

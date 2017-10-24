@@ -124,13 +124,11 @@ class ResponseClient extends React.Component {
                 format={this.props.exportFormat}
                 columns={this.props.exportColumns}
                 paths={this.props.exportPaths}
-                fileName={this.props.exportFileName}
                 updateFormat={this.props.updateExportFormat}
                 addColumn={this.props.addColumn}
                 deleteColumn={this.props.deleteColumn}
                 updateColumnKey={this.props.updateColumnKey}
                 updateColumnValue={this.props.updateColumnValue}
-                updateFileNameInput={this.props.updateFileNameInput}
                 executeExport={this.props.executeExportResponse}
             />
             : null
@@ -149,7 +147,6 @@ function mapStateToProps(state){
     ...state.responseClient,
     exportFormat: state.exportResponse.format,
     exportColumns: state.exportResponse.columns,
-    exportFileName: state.exportResponse.fileName,
     exportPaths: state.responseClient.paths
   }
 }
@@ -160,7 +157,6 @@ export default connect(mapStateToProps, {
   deleteColumn: exportActions.deleteColumn,
   updateColumnKey: exportActions.updateColumnKey,
   updateColumnValue: exportActions.updateColumnValue,
-  updateFileNameInput: exportActions.updateFileNameInput,
   executeExportResponse: exportActions.executeExportResponse,
 
 })(ResponseClient)

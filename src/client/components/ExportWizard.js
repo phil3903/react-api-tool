@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import get from 'lodash/get'
-import { Wizard, WizardStep, Select, SelectOption, TextField, Button } from 'reactables'
+import { Select, SelectOption, Button } from 'reactables'
 import ParameterInput from './ParameterInput'
-import colors, { secondary } from '../constants/colors'
+import Heading from './Heading'
+import colors, { primary, highlight, highlightHover, disabled } from '../constants/colors'
 
 export default class ExportWizard extends React.Component {
 
@@ -30,78 +31,50 @@ export default class ExportWizard extends React.Component {
       format,
       columns,
       paths,
-      fileName,
       updateFormat,
       addColumn,
       deleteColumn,
       updateColumnKey,
       updateColumnValue,
-      updateFileNameInput,
       executeExport
     } = this.props
 
     const styles = {
       base:{
-        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
         width: '100%',
-        height: '100%'
+        backgroundColor: primary
       },
-      wizard: {
-        base: {
-          backgroundColor: colors.blueGrey[900],
-          height: '100%'
-        },
-        controls:{
-          button:{
-            next: {
-              active:{
-                backgroundColor: colors.yellow[600],
-                color: colors.black
-              },
-              hovered:{
-                backgroundColor: colors.yellow[400],
-                color: colors.black
-              }
-
-            },
-            complete:{
-              active:{
-                backgroundColor: colors.yellow[600],
-                color: colors.black
-              },
-              hovered:{
-                backgroundColor: colors.yellow[400],
-                color: colors.black
-              }
-            }
-          }
-        }
+      body:{
+        flex: 1,
+        padding: 20,
+        boxSizing: 'border-box',
+        overflowY: 'auto'
       },
-      wizardStep:{
+      exportButton:{
         base:{
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '20px 10px',
-          backgroundColor: colors.blueGrey[900],
+          width: '100%',
+          height: 60,
+          borderRadius: 0,
+          backgroundColor: highlight
+        },
+        hovered:{
+          backgroundColor: highlightHover
+        },
+        disabled:{
+          backgroundColor: disabled
         }
       },
-      textField:{
-        input:{
-          base:{
-            border: 'none',
-            borderBottom: `1px solid ${secondary}`,
-            borderColor: secondary,
-            color: colors.white,
-            fontSize: 16,
-            borderRadius: 0,
-          },
-          focused:{
-            borderColor: colors.yellow[600]
-          },
-          blur:{
-            borderColor: secondary,
-          }
+      heading:{
+        base: {
+          paddingBottom: 10
         }
+      },
+      section:{
+        display: 'flex',
+        flexDirection: 'column',
+        paddingBottom: 40
       },
       addButton:{
         base:{
@@ -116,22 +89,14 @@ export default class ExportWizard extends React.Component {
           color: colors.yellow[600],
           backgroundColor: 'transparent',
         }
-      }
+      },
     }
     return(
       <div style={ styles.base }>
-        <Wizard
-          style={styles.wizard}
-          shouldShowTimeline={false}
-          animationDuration={500}
-          completeText={'Export'}
-          onComplete={executeExport}
-        >
-          <WizardStep
-            name={'format'}
-            title={'Format'}
-            style={styles.wizardStep}
-          >
+        <div style={styles.body}>
+
+          <section style={styles.section}>
+            <Heading size={2} text={'Format'} style={ styles.heading } />
             <Select
               placeholder={'Select Format'}
               onChange={updateFormat}
@@ -140,35 +105,41 @@ export default class ExportWizard extends React.Component {
               <SelectOption value={'json'} text={'JSON'}/>
               <SelectOption value={'csv'} text={'CSV'}/>
             </Select>
-          </WizardStep>
+          </section>
 
-          <WizardStep name={'fields'} title={'Fields'} style={styles.wizardStep}>
-            {columns.map((item, i) =>
-              <ParameterInput
-                key={i}
-                index={i}
-                listLength={columns.length}
-                keyOptions={paths}
-                param={item.key}
-                value={item.value}
-                onValueUpdate={updateColumnValue}
-                onKeyUpdate={updateColumnKey}
-                onDelete={deleteColumn}
-                onAdd={addColumn}
-              />
-            )}
-            {
-              get(columns[columns.length - 1], 'value.length', {})
-                ?
-                <Button
-                  text={'Add Another'}
-                  style={styles.addButton}
-                  onClick={ addColumn }
-                />
-                : null
-            }
-          </WizardStep>
-        </Wizard>
+
+          { format === 'csv' ?
+            <section style={ styles.section }>
+              <Heading size={2} text={'Fields'} style={styles.heading}/>
+              {columns ? columns.map((item, i) =>
+                <ParameterInput
+                  key={i}
+                  index={i}
+                  listLength={columns.length}
+                  keyOptions={paths}
+                  param={item.key}
+                  value={item.value}
+                  onValueUpdate={updateColumnValue}
+                  onKeyUpdate={updateColumnKey}
+                  onDelete={deleteColumn}
+                  onAdd={addColumn}
+                />) : null }
+                { get(columns[columns.length - 1], 'value.length', {})
+                  ? <Button
+                    text={'Add Another'}
+                    style={styles.addButton}
+                    onClick={ addColumn }
+                  /> : null }
+              </section>
+            : null }
+        </div>
+
+        <Button
+          style={styles.exportButton}
+          text={'Export Data'}
+          onClick={executeExport}
+          isDisabled={ !format.length }
+        />
       </div>
     )
   }

@@ -17,8 +17,11 @@ function* exportJSON(data){
 
 function* exportCSV(data, columns){
 
-  const fields = columns.map(({key, value}) =>
-    ({label: value, value: key.split('.*.').join('.')}))
+  const fields = columns
+    .filter(({key, value}) => !key && !value)
+    .map(({key, value}) => ({label: value, value: key.split('.*.').join('.')}))
+
+
 
   const unwindPath = uniq(columns.map(col => col.key)
     .filter(string => string.indexOf('.*.') >= 0)
@@ -37,10 +40,11 @@ function* watchExportResponse(){
   while(true){
     yield take(EXPORT_RESPONSE.EXECUTE_EXPORT_RESPONSE)
 
-    const { format, columns, fileName } = yield select(selectExportOptions)
+    const { format, columns } = yield select(selectExportOptions)
+
     const data = yield select(selectPayload)
 
-    if(format === 'csv') yield exportCSV(data, columns, fileName)
+    if(format === 'csv') yield exportCSV(data, columns)
     if(format === 'json') yield exportJSON(data)
   }
 }
