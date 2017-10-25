@@ -13,9 +13,11 @@ export const getPathsWithoutIndices =(payload)=> {
       else if(typeof value === 'object' && !Array.isArray(value)) {
         const append = Array.isArray(obj) ? '' : '.' + key
         walk(value, path + append)
+      }else{
+        const append = Array.isArray(obj) ? '' : '.' + key
+        paths.push(path + append)
       }
-      const append = Array.isArray(obj) ? '' : '.' + key
-      paths.push(path + append)
+
     }
   }
 
@@ -36,9 +38,11 @@ export const getPathsWithStar =(payload)=> {
       else if(typeof value === 'object' && !Array.isArray(value)) {
         const append = Array.isArray(obj) ? '.*' : '.' + key
         walk(value, path + append)
+      }else {
+        const append = Array.isArray(obj) ? '.*' : '.' + key
+        paths.push(path + append)
       }
-      const append = Array.isArray(obj) ? '.*' : '.' + key
-      paths.push(path + append)
+
     }
   }
 

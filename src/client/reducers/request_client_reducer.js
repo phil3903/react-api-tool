@@ -50,7 +50,7 @@ export default function requestClient( state = initialState, action ) {
         ...state,
         formParameterList: [
           ...state.formParameterList.slice(0 , action.index),
-          {key: action.key, value: state.formParameterList[action.index].value},
+          {key: action.key || '', value: state.formParameterList[action.index].value},
           ...state.formParameterList.slice(action.index + 1)
         ]
       }

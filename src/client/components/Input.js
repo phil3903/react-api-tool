@@ -27,6 +27,7 @@ export default class Input extends React.Component {
           borderColor: secondary,
         },
         disabled: {
+          borderColor: secondary,
           borderBottom: `1px solid ${secondary}`
         }
       }

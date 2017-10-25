@@ -5,8 +5,6 @@ const initialState = {
   columns: [{key: '', value: ''}],
 }
 
-
-
 export default function exportResponse( state = initialState, action ) {
   switch(action.type){
     case EXPORT_RESPONSE.UPDATE_FORMAT:
@@ -26,7 +24,7 @@ export default function exportResponse( state = initialState, action ) {
       return {...state,
         columns: [
           ...state.columns.slice(0 , action.index),
-          {key: action.key, value: state.columns[action.index].value},
+          {key: action.key || '' , value: state.columns[action.index].value},
           ...state.columns.slice(action.index + 1)
         ]
       }

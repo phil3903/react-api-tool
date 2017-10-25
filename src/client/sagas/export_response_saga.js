@@ -3,7 +3,7 @@ import json2csv from 'json2csv'
 import uniq from 'lodash/uniq'
 import { EXPORT_RESPONSE } from '../actions/export_response_actions'
 import { selectExportOptions } from '../reducers/export_response_reducer'
-import { selectPayload } from '../reducers/response_client_reducer'
+import { selectPathsWithoutStars, selectPaths, selectPayload } from '../reducers/response_client_reducer'
 import { download } from '../services/file_exporter'
 
 /**
@@ -17,15 +17,24 @@ function* exportJSON(data){
 
 function* exportCSV(data, columns){
 
-  const fields = columns
-    .filter(({key, value}) => !key && !value)
-    .map(({key, value}) => ({label: value, value: key.split('.*.').join('.')}))
+  const paths = yield select(selectPaths)
 
+  columns = columns.filter(col => col.key)
+  columns = columns.length ? columns : paths
 
+  const fields = columns.map(col => {
+    const key = col.key || col
+    const value = col.value || col
+    const path = key.split('.*.').join('.')
+    const label = value || key
+    return {label, value: path}
+  })
 
-  const unwindPath = uniq(columns.map(col => col.key)
-    .filter(string => string.indexOf('.*.') >= 0)
+  const unwindPath = uniq(columns.map(col => col.key || col)
+    .filter(col => col.indexOf('.*.') >= 0)
     .map(p => p.split('.*.')[0]))
+
+  console.log(fields, unwindPath)
 
   const csv = json2csv({data, fields, unwindPath })
   download('csv', csv, 'api_response')
@@ -41,7 +50,6 @@ function* watchExportResponse(){
     yield take(EXPORT_RESPONSE.EXECUTE_EXPORT_RESPONSE)
 
     const { format, columns } = yield select(selectExportOptions)
-
     const data = yield select(selectPayload)
 
     if(format === 'csv') yield exportCSV(data, columns)

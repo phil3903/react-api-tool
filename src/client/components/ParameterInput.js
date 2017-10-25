@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button, Dropdown, DropdownNode, DropdownMenu, DropdownOption, SelectOption, Select } from 'reactables'
+import { Button, SelectOption, Select } from 'reactables'
 import icons from '../constants/icons'
 import colors, {highlight, secondary} from '../constants/colors'
-import shadows from '../constants/shadows'
 import Icon from './Icon'
 import Input from './Input'
 
@@ -46,9 +45,7 @@ const ParameterInput =(
         borderColor: secondary,
       },
       disabled: {
-        borderColor: secondary,
-        borderBottom: `1px solid ${secondary}`,
-        WebkitAppearance: 'none'
+        borderColor: secondary
       }
     },
     deleteContainer:{

@@ -4,7 +4,7 @@ import uniq from 'lodash/uniq'
 import json2csv from 'json2csv'
 import { RESPONSE_CLIENT } from '../actions/response_client_actions'
 import { REQUEST_CLIENT } from '../actions/request_client_actions'
-import { getPathsWithoutIndices, getPathsWithStar } from '../helpers/path'
+import { getPathsWithoutIndices, getPathsWithStar, getPaths } from '../helpers/path'
 
 const initialState = {
   subnav: 'response',
@@ -32,7 +32,8 @@ export default function responseClient( state = initialState, action ) {
         payload: data,
         statusCode: get(action.response, 'metadata.status', 'Success'),
         clientResponse: lineNumbers(JSON.stringify(data, null, 2)),
-        paths: getPathsWithStar(data)
+        paths: getPathsWithStar(data),
+        pathsWithoutStars: getPathsWithoutIndices(data)
       }
     case REQUEST_CLIENT.SEND_REQUEST.FAILURE:
       const requestError = get(action, 'error.message', action.error)
@@ -61,3 +62,5 @@ export default function responseClient( state = initialState, action ) {
 }
 
 export const selectPayload =(state)=> state.responseClient.payload
+export const selectPathsWithoutStars =(state)=> state.responseClient.pathsWithoutStars
+export const selectPaths =(state)=> state.responseClient.paths

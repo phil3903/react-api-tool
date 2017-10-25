@@ -33,7 +33,7 @@ class ResponseClient extends React.Component {
 
   render(){
 
-    const { payload, exportType, subnav, clientResponse } = this.props
+    const { subnav, clientResponse } = this.props
     const isExportDisabled = !clientResponse || !clientResponse.length
 
     const styles = {
