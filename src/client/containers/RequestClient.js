@@ -156,10 +156,12 @@ class RequestClient extends React.Component {
               value={'json'}
               onClick={ (value)=>this.props.setRequestFormat(value, 'JSON') }/>
           </CardNavDropdown>
-          <CardNavLink
-            text={'Auth'}
-            onClick={()=> this.props.setSubnav('auth')}
-            isActive={subnav === 'auth'}/>
+          {/* Hiding Auth tab for now *
+            <CardNavLink
+              text={'Auth'}
+              onClick={()=> this.props.setSubnav('auth')}
+              isActive={subnav === 'auth'}/>
+          */}
         </CardNav>
         <div style={ styles.body }>
           { isFormViewActive
