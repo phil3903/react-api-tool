@@ -1,5 +1,7 @@
 import uniq from 'lodash/uniq'
 
+// TODO: consolidate these helpers - pass in a separator
+
 export const getPathsWithoutIndices =(payload)=> {
   let paths = []
   const walk = (obj, path) =>{

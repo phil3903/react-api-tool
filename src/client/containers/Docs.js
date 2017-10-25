@@ -87,7 +87,7 @@ class Docs extends React.Component {
         color: white,
         whiteSpace: 'pre-wrap',
         padding: 10,
-        margin: 0,
+        margin: '10px 0 0',
         borderRadius: 2,
       }
     }
@@ -174,17 +174,13 @@ class Docs extends React.Component {
 
 
           { get(route, 'example.description') ?
-            <div>
-              <section style={styles.section}>
-                <p style={ styles.description }>{ route.example.description }</p>
-              </section>
-              <section style={styles.section}>
-                <p style={ styles.example }>
-                  { route.example.value }
-                </p>
-              </section>
-            </div>
+            <section style={styles.section}>
+              <p style={ styles.description }>{ route.example.description }</p>
 
+              <p style={ styles.example }>
+                { route.example.value }
+              </p>
+            </section>
               : null
           }
 
