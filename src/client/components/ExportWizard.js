@@ -124,7 +124,8 @@ export default class ExportWizard extends React.Component {
                   onDelete={deleteColumn}
                   onAdd={addColumn}
                 />) : null }
-                { get(columns[columns.length - 1], 'value.length', {})
+                {get(columns[columns.length - 1], 'value.length')
+                || get(columns[columns.length - 1], 'key.length')
                   ? <Button
                     text={'Add Another'}
                     style={styles.addButton}

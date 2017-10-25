@@ -22,9 +22,11 @@ function* exportCSV(data, columns){
   columns = columns.filter(col => col.key)
   columns = columns.length ? columns : paths
 
+  console.log(columns)
+
   const fields = columns.map(col => {
     const key = col.key || col
-    const value = col.value || col
+    const value = col.value || key
     const path = key.split('.*.').join('.')
     const label = value || key
     return {label, value: path}
