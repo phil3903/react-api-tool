@@ -97,7 +97,8 @@ class Docs extends React.Component {
         get: {color: colors.green[500]},
         post: {color: colors.purple[500]},
         put: {color: colors.blue[500]},
-        delete: {color: colors.red[500]}
+        delete: {color: colors.red[500]},
+        patch: {color: colors.orange[500]}
       }
     }
 

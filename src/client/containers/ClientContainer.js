@@ -79,10 +79,12 @@ class ClientContainer extends React.Component {
           isVisible={this.state.isOverlayVisible}
         />
         <EndpointManager onNavClick={ this.handleNavClick }/>
+
         <div style={ styles.clientContainer }>
           <RequestClient />
           <ResponseClient />
         </div>
+
         <Docs/>
 
         <SaveRequestModal
@@ -95,6 +97,7 @@ class ClientContainer extends React.Component {
           group={this.props.group}
           isNameUnique={this.props.isNameUnique}
         />
+
       </div>
     )
   }

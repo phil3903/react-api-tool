@@ -5,7 +5,16 @@ import colors from '../../constants/colors'
 import { Button } from 'reactables'
 import ParameterInput from '../ParameterInput'
 
-const FormRequestView =({formParameterList, keyOptions, onKeyUpdate, onValueUpdate, onDelete, isActive, onAdd })=>{
+const FormRequestView =({
+  formList,
+  options,
+  onKeyUpdate,
+  onValueUpdate,
+  onDelete,
+  isActive,
+  onAdd,
+  onCheckParameter
+})=>{
 
   if(!isActive) return null
 
@@ -33,23 +42,26 @@ const FormRequestView =({formParameterList, keyOptions, onKeyUpdate, onValueUpda
 
   return(
     <div style={ styles.base }>
-      {formParameterList.map((item, i) =>
+      {formList.map((item, i) =>
         <ParameterInput
           key={i}
           index={i}
-          listLength={formParameterList.length}
-          keyOptions={keyOptions ? keyOptions.map(key => key.name) : []}
+          listLength={formList.length}
           param={item.key}
           value={item.value}
+          type={item.type}
+          isDisabled={item.isDisabled}
+          options={options || []}
           onValueUpdate={onValueUpdate}
           onKeyUpdate={onKeyUpdate}
           onDelete={onDelete}
           onAdd={onAdd}
+          onCheck={onCheckParameter}
         />
       )}
 
       {
-        get(formParameterList[formParameterList.length - 1], 'value.length', {})
+        get(formList[formList.length - 1], 'value.length', {})
           ?
           <Button
             text={'Add Another'}

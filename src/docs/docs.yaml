@@ -81,17 +81,7 @@ routes:
     method: get
     group: Fruit
     endpoint: fruits
-    description: >
-      Returns all fruit present in the database.
-    example:
-      description: This is where an example description would go.
-      value: |
-        {
-          "page": 1,
-          "limit": 10
-        }
-
-    params:
+    query:
       - name: page
         type: Number
         required: false
@@ -106,10 +96,27 @@ routes:
         description: >
           The number of results returned per page.
 
+    description: >
+      Returns all fruit present in the database.
+    example:
+      description: This is where an example description would go.
+      value: |
+        {
+          "page": 1,
+          "limit": 10
+        }
+
   - name: get_fruit_by_id
     displayName: Get Fruit By ID
     method: get
     endpoint: fruits/:id
+    params:
+      - name: id
+        type: String
+        required: true
+        default: null
+        description: >
+          The page number of the results.
 
 
 

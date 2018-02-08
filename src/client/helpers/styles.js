@@ -3,7 +3,6 @@ import { findDOMNode } from 'react-dom'
 import get from 'lodash/get'
 
 export const getStyleValue =(element, prop) =>{
-  console.log(element)
   // if React element
   if(isValidElement(element)){
     element = findDOMNode(element)

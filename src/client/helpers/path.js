@@ -55,8 +55,6 @@ export const getPathsWithStar =(payload)=> {
   )
 }
 
-
-
 export const getPaths =(payload)=>{
   let paths = [];
   const walk =(obj,path)=>{

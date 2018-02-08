@@ -1,13 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button, SelectOption, Select } from 'reactables'
+import { Button, SelectOption, Select, Checkbox } from 'reactables'
 import icons from '../constants/icons'
 import colors, {highlight, secondary} from '../constants/colors'
 import Icon from './Icon'
 import Input from './Input'
 
 const ParameterInput =(
-  {index, keyOptions, value, param, onAdd, onKeyUpdate, onValueUpdate, onDelete, listLength})=>{
+  {
+    index,
+    options,
+    value,
+    param,
+    onAdd,
+    onKeyUpdate,
+    onValueUpdate,
+    onDelete,
+    listLength,
+    isDisabled,
+    onCheck
+  })=>{
   
   const styles = {
     base:{
@@ -15,7 +27,8 @@ const ParameterInput =(
       alignItems: 'center',
       height: 36,
       width: '100%',
-      marginBottom: 30
+      marginBottom: 30,
+      opacity: isDisabled ? 0.5 : 1
     },
     select:{
       base:{
@@ -73,25 +86,41 @@ const ParameterInput =(
     }
   }
 
+  console.log(options)
+
   return(
     <div style={ styles.base }>
 
+      <Checkbox
+        isChecked={!isDisabled}
+        onClick={(isChecked)=> onCheck(index, !isChecked)}
+        size={14}
+        style={{
+
+        }}
+      />
+
+      {/* Key Param Select */}
       <Select
         style={styles.select}
         onChange={(value)=> onKeyUpdate(index, value)}
         value={ param }
         placeholder={'Parameter'}
-        isDisabled={ !keyOptions.length }
+        isDisabled={ !options.length }
       >
-        {keyOptions ? keyOptions.map(option =>
+        {options ? options.map(option =>
           <SelectOption
             style={ styles.dropdownOption }
-            key={option}
-            text={option}
-            value={option}
+            key={option.name}
+            text={option.name}
+            value={option.name}
           />
         ) : null}
       </Select>
+
+
+      {/* Value Dropdown */}
+
       <Input
         autoFocus
         placeholder={'value'}
@@ -101,6 +130,36 @@ const ParameterInput =(
         isDisabled={!param}
         onEnterKey={ onAdd }
       />
+
+      {/* options
+        ? <Select
+            style={styles.select}
+            onChange={(value)=> onValueUpdate(index, value)}
+            value={ param }
+            placeholder={'Parameter'}
+            isDisabled={ !options && !options.length }
+          >
+            { options.map(option =>
+              <SelectOption
+                style={ styles.dropdownOption }
+                key={option}
+                text={option}
+                value={option}
+              />
+            )}
+          </Select>
+
+        : <Input
+            autoFocus
+            placeholder={'value'}
+            value={value}
+            onChange={ (value)=> onValueUpdate(index, value) }
+            onClick={()=>{}}
+            isDisabled={!param}
+            onEnterKey={ onAdd }
+          />
+      */}
+
       <div style={styles.deleteContainer}>
         <Button
           style={ styles.deleteButton }

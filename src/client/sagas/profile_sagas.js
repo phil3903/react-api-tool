@@ -1,6 +1,6 @@
 import { take, call, select } from 'redux-saga/effects'
 import { entityRequest } from './_root_saga'
-import { selectUrl, selectMethod, selectFormParameterList, selectJsonInput } from '../reducers/request_client_reducer'
+import { selectUrl, selectMethod, selectFormList, selectJsonInput } from '../reducers/request_client_reducer'
 import { selectGroup, selectName } from '../reducers/save_request_reducer'
 import { selectProfile } from '../reducers/profile_reducer'
 import { selectRoute } from '../reducers/docs_reducer'
@@ -56,7 +56,7 @@ function* watchSaveRequest(){
       doc_reference: selectedRoute.doc_reference,
       doc_display_name: selectedRoute.displayName,
       json: yield select(selectJsonInput),
-      form: yield select(selectFormParameterList),
+      form: yield select(selectFormList),
       method: yield select(selectMethod),
       endpoint: yield select(selectUrl),
       group: yield select(selectGroup),

@@ -1,8 +1,10 @@
 import { EXPORT_RESPONSE } from '../actions/export_response_actions'
 
+const exportObj = {key: '', value: ''}
+
 const initialState = {
   format: '',
-  columns: [{key: '', value: ''}],
+  columns: [exportObj],
 }
 
 export default function exportResponse( state = initialState, action ) {
@@ -11,7 +13,7 @@ export default function exportResponse( state = initialState, action ) {
       return {...state, format: action.format }
     case EXPORT_RESPONSE.ADD_COLUMN:
       return {...state,
-        columns: [...state.columns, {key: '', value: ''}]
+        columns: [...state.columns, exportObj]
       }
     case EXPORT_RESPONSE.DELETE_COLUMN:
       return {...state,

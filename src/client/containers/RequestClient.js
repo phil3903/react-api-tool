@@ -14,13 +14,10 @@ import Toolbar from '../components/Toolbar'
 import Icon from '../components/Icon'
 import SegmentedUrlBar from '../components/SegmentedUrlBar'
 import {FormRequestView, AuthRequestView, JsonRequestView }from '../components/request_views/index'
+import ParamsRequestView from '../components/request_views/ParamsRequestView'
 
 
 class RequestClient extends React.Component {
-
-  handleUrlParamUpdate =(value, name)=>{
-
-  }
 
   handleUpdateUrlMethod =(method)=>{
     this.props.updateUrlMethod(method)
@@ -95,9 +92,12 @@ class RequestClient extends React.Component {
 
     const { requestFormat, requestFormatDisplay, subnav, route } = this.props
 
-    const isFormViewActive = subnav === 'format' && requestFormat === 'form'
-    const isJsonViewActive = subnav === 'format' && requestFormat === 'json'
-    const isAuthViewActive = subnav === 'auth'
+    console.log(route)
+
+    const isFormViewActive =   subnav === 'format' && requestFormat === 'form'
+    const isJsonViewActive =   subnav === 'format' && requestFormat === 'json'
+    const isParamsViewActive = subnav === 'params'
+    const isAuthViewActive =   subnav === 'auth'
 
     return (
       <div style={styles.base}>
@@ -119,7 +119,7 @@ class RequestClient extends React.Component {
                     <Icon name={icons.arrow_drop_down}/>
                   </DropdownNode>
                   <DropdownMenu>
-                    { ['GET', 'POST', 'PUT', 'DELETE'].map(method =>
+                    { ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'].map(method =>
                       <DropdownOption
                         style={styles.dropdownOption }
                         key={method}
@@ -156,25 +156,34 @@ class RequestClient extends React.Component {
               value={'json'}
               onClick={ (value)=>this.props.setRequestFormat(value, 'JSON') }/>
           </CardNavDropdown>
-          {/* Hiding Auth tab for now *
-            <CardNavLink
-              text={'Auth'}
-              onClick={()=> this.props.setSubnav('auth')}
-              isActive={subnav === 'auth'}/>
-          */}
+
+          <CardNavLink
+            text={'Params'}
+            isDisabled={false}
+            onClick={()=> this.props.setSubnav('params')}
+            isActive={subnav === 'params'}/>
+
+          {/*<CardNavLink*/}
+            {/*text={'Auth'}*/}
+            {/*onClick={()=> this.props.setSubnav('auth')}*/}
+            {/*isActive={subnav === 'auth'}/>*/}
+
         </CardNav>
         <div style={ styles.body }>
           { isFormViewActive
             ? <FormRequestView
                 isActive={ isFormViewActive }
-                formParameterList={this.props.formParameterList}
-                keyOptions={ route.params || route.body }
+                formList={this.props.formList}
+                options={ route.params || route.body }
                 onAdd={ this.props.addFormParameter }
                 onKeyUpdate={ this.props.updateFormParameterKey }
                 onValueUpdate={ this.props.updateFormParameterValue }
-                onDelete={ this.props.deleteFormParameter }/>
+                onDelete={ this.props.deleteFormParameter }
+                onCheckParameter={this.props.disableFormParameter}
+            />
             : null
           }
+
           { isJsonViewActive
             ? <JsonRequestView
                 isActive={ isJsonViewActive }
@@ -183,11 +192,19 @@ class RequestClient extends React.Component {
                 onChange={ this.props.updateJsonInput }/>
             : null
           }
+
           { isAuthViewActive
             ? <AuthRequestView
               isActive={ isAuthViewActive }/>
             : null
           }
+
+          { isParamsViewActive
+            ? <ParamsRequestView
+              isActive={ isParamsViewActive }/>
+            : null
+          }
+
         </div>
 
 
@@ -214,6 +231,7 @@ export default connect(mapStateToProps, {
   deleteFormParameter: requestActions.deleteFormParameter,
   updateFormParameterKey: requestActions.updateFormParameterKey,
   updateFormParameterValue: requestActions.updateFormParameterValue,
+  disableFormParameter: requestActions.disableFormParameter,
   setSubnav: requestActions.setSubnav,
   setRequestFormat: requestActions.setRequestFormat,
   updateJsonInput: requestActions.updateJsonInput,

@@ -45,8 +45,6 @@ let profile = {
 }
 
 app.get('/api/profile', (req, res, next)=>{
-  console.log('GET_PROFILE')
-  console.log(util.inspect(profile, false, null))
   res.json(profile)
 })
 
@@ -92,7 +90,6 @@ app.use((req, res, next)=>{
 })
 
 app.use(function (err, req, res, next) {
-  console.log(err, req, res)
   next()
 });
 

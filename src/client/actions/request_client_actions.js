@@ -11,8 +11,10 @@ export const REQUEST_CLIENT = prefixActionTypes('REQUEST_CLIENT',[
   'SET_REQUEST_FORMAT',
   'UPDATE_JSON_INPUT',
   'UPDATE_FORM_INPUT_LIST',
+  'UPDATE_PARAM_INPUT_LIST',
   'ADD_FORM_PARAMETER',
   'DELETE_FORM_PARAMETER',
+  'DISABLE_FORM_PARAMETER',
   'UPDATE_FORM_PARAMETER_KEY',
   'UPDATE_FORM_PARAMETER_VALUE',
   'SET_JSON_VALIDATION',
@@ -38,12 +40,15 @@ export const setRequestFormat =(value, display)=> action(REQUEST_CLIENT.SET_REQU
 
 export const updateJsonInput =(input)=> action(REQUEST_CLIENT.UPDATE_JSON_INPUT, {input})
 export const updateFormInputList =(input)=> action(REQUEST_CLIENT.UPDATE_FORM_INPUT_LIST, {input})
+export const updateParamInputList =(input)=> action(REQUEST_CLIENT.UPDATE_PARAM_INPUT_LIST, {input})
 
 export const addFormParameter =()=> action(REQUEST_CLIENT.ADD_FORM_PARAMETER)
-export const deleteFormParameter =(index) => action(REQUEST_CLIENT.DELETE_FORM_PARAMETER, {index})
+export const deleteFormParameter =(index)=> action(REQUEST_CLIENT.DELETE_FORM_PARAMETER, {index})
+export const disableFormParameter =(index, isDisabled)=> action(REQUEST_CLIENT.DISABLE_FORM_PARAMETER, {index, isDisabled})
 export const updateFormParameterKey =(index, key) => action(REQUEST_CLIENT.UPDATE_FORM_PARAMETER_KEY, {index, key})
 export const updateFormParameterValue =(index, value) => action(REQUEST_CLIENT.UPDATE_FORM_PARAMETER_VALUE, {index, value})
 export const setJsonValidation =(isValid)=> action(REQUEST_CLIENT.SET_JSON_VALIDATION, {isValid})
+
 /**
  * Saga Triggers
  */

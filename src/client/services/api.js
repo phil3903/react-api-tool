@@ -14,7 +14,8 @@ export const Methods = {
   POST: 'POST',
   GET: 'GET',
   PUT: 'PUT',
-  DELETE: 'DELETE'
+  DELETE: 'DELETE',
+  PATCH: 'PATCH'
 }
 
 export function objectToQueryString(obj){

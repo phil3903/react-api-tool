@@ -1,8 +1,5 @@
 import { createStore, applyMiddleware } from 'redux'
 import { logger, crashReporter } from '../middleware/loggingMiddleware'
-import socketMiddleware  from '../socket/manager/socketMiddleware'
-import configureSocket, { INIT_SOCKET } from '../socket/manager/configureSocket'
-import { socketEvents } from '../socket/events'
 import routerMiddleware from '../middleware/routerMiddleware'
 import createSagaMiddleware, { END } from 'redux-saga'
 import rootReducer from '../reducers/_root_reducer'
@@ -11,7 +8,6 @@ import responseTimeMiddleware from '../middleware/responseTimeMiddleware'
 function configureStore(initialState, history){
 
   const sagaMiddleware = createSagaMiddleware()
-  const socketConfig = configureSocket('', { query: 'token=' + localStorage.getItem('something') })
 
   const store = createStore(
     rootReducer,
@@ -19,7 +15,6 @@ function configureStore(initialState, history){
     applyMiddleware(
       responseTimeMiddleware(),
       sagaMiddleware,
-      socketMiddleware(socketConfig, socketEvents),
       routerMiddleware(history),
       logger,
       crashReporter
@@ -28,7 +23,7 @@ function configureStore(initialState, history){
 
   store.runSaga = sagaMiddleware.run
   store.close = () => store.dispatch(END)
-  store.dispatch(INIT_SOCKET)
+
   return store
 }
 

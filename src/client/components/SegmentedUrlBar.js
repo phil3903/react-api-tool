@@ -59,10 +59,6 @@ export default class SegmentedUrlBar extends React.Component {
 
       }, [baseUrl])
 
-
-    console.log(endpoints)
-
-
     const styles = {
       base:{
         display: 'flex'

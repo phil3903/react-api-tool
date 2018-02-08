@@ -4,7 +4,7 @@ import { entityRequest } from './_root_saga'
 import { REQUEST_CLIENT, updateUrlMethod, updateUrlInput, sendRequestEntity, saveRequestEntity } from '../actions/request_client_actions'
 import { DOCS } from '../actions/docs_actions'
 import { selectEnvironment, selectRoute } from '../reducers/docs_reducer'
-import { selectParameters, selectUrl, selectMethod, selectFormParameterList, selectJsonInput } from '../reducers/request_client_reducer'
+import { selectParameters, selectUrl, selectMethod, selectFormList, selectJsonInput } from '../reducers/request_client_reducer'
 import * as responseActions from '../actions/response_client_actions'
 import * as api from '../services/request_client_service'
 

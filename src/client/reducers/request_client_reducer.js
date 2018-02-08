@@ -1,15 +1,30 @@
 import { REQUEST_CLIENT } from '../actions/request_client_actions'
 
+export const listObj = {
+  key: '',
+  value: '',
+  type: '',
+  isDisabled: false,
+  choices: []
+}
+
 const initialState = {
   subnav: 'format',
+
   requestFormat: 'form',
   requestFormatDisplay: 'Form',
+
   urlInput: '',
   urlMethod: '',
-  formParameterList: [{key: '', value: ''}],
+
+  formList: [listObj],
+  paramList: [listObj],
   jsonInput: '{}',
+
   isJsonValid: true
 }
+
+
 
 export default function requestClient( state = initialState, action ) {
   switch(action.type){
@@ -31,37 +46,37 @@ export default function requestClient( state = initialState, action ) {
       }
     case REQUEST_CLIENT.UPDATE_FORM_INPUT_LIST:
       return {...state,
-        formParameterList: action.input
+        formList: action.input
       }
 
     case REQUEST_CLIENT.ADD_FORM_PARAMETER:
       return {...state,
-        formParameterList: [...state.formParameterList, {key: '', value: ''}]
+        formList: [...state.formList, listObj]
       }
     case REQUEST_CLIENT.DELETE_FORM_PARAMETER:
       return {...state,
-        formParameterList: [
-          ...state.formParameterList.slice(0 , action.index),
-          ...state.formParameterList.slice(action.index + 1)
-        ]
+        formList: deleteListObject(state.formList, action.index)
+      }
+    case REQUEST_CLIENT.DISABLE_FORM_PARAMETER:
+      return {
+        ...state,
+        formList: updateListObject(state.formList, action.index, {
+          isDisabled: action.isDisabled
+        })
       }
     case REQUEST_CLIENT.UPDATE_FORM_PARAMETER_KEY:
       return {
         ...state,
-        formParameterList: [
-          ...state.formParameterList.slice(0 , action.index),
-          {key: action.key || '', value: state.formParameterList[action.index].value},
-          ...state.formParameterList.slice(action.index + 1)
-        ]
+        formList: updateListObject(state.formList, action.index, {
+          key: action.key || ''
+        })
       }
     case REQUEST_CLIENT.UPDATE_FORM_PARAMETER_VALUE:
       return {
         ...state,
-        formParameterList: [
-          ...state.formParameterList.slice(0 , action.index),
-          {value: action.value, key: state.formParameterList[action.index].key},
-          ...state.formParameterList.slice(action.index + 1)
-        ]
+        formList: updateListObject(state.formList, action.index, {
+          value: action.value
+        })
       }
 
     case REQUEST_CLIENT.SET_JSON_VALIDATION:
@@ -75,14 +90,38 @@ export default function requestClient( state = initialState, action ) {
 }
 
 /**
+ * Helpers
+ */
+
+const updateListObject =(array, index, update)=>{
+  const obj = array[index]
+   return [
+     ...array.slice(0 , index),
+     {...obj, ...update},
+     ...array.slice(index + 1)
+   ]
+  }
+
+const deleteListObject =(array, index)=>{
+  return [
+    ...array.slice(0 , index),
+    ...array.slice(index + 1)
+  ]
+}
+
+
+/**
  * Selectors
  */
 
 export const selectParameters =(state)=> {
-  const { requestFormat, formParameterList, jsonInput } = state.requestClient
+  const { requestFormat, formList, jsonInput } = state.requestClient
 
   if(requestFormat === 'form')
-    return formParameterList.reduce((obj, param) => ({...obj, [param.key]: param.value}), {})
+    return formList.reduce((obj, param) => {
+      if(param.isDisabled) return obj
+      return {...obj, [param.key]: param.value}
+    }, {})
 
   if(requestFormat === 'json' && jsonInput.length)
     return JSON.parse(jsonInput)
@@ -91,4 +130,4 @@ export const selectParameters =(state)=> {
 export const selectMethod =(state)=> state.requestClient.urlMethod
 export const selectUrl =(state)=> state.requestClient.urlInput
 export const selectJsonInput = (state)=> state.requestClient.jsonInput
-export const selectFormParameterList =(state)=> state.requestClient.formParameterList
+export const selectFormList =(state)=> state.requestClient.formList
