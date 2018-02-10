@@ -92,8 +92,6 @@ class RequestClient extends React.Component {
 
     const { requestFormat, requestFormatDisplay, subnav, route } = this.props
 
-    console.log(route)
-
     const isFormViewActive =   subnav === 'format' && requestFormat === 'form'
     const isJsonViewActive =   subnav === 'format' && requestFormat === 'json'
     const isParamsViewActive = subnav === 'params'
@@ -174,7 +172,7 @@ class RequestClient extends React.Component {
             ? <FormRequestView
                 isActive={ isFormViewActive }
                 formList={this.props.formList}
-                options={ route.params || route.body }
+                options={ route.query || route.body || [] }
                 onAdd={ this.props.addFormParameter }
                 onKeyUpdate={ this.props.updateFormParameterKey }
                 onValueUpdate={ this.props.updateFormParameterValue }

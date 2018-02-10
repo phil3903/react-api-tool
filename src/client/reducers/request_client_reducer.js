@@ -67,9 +67,11 @@ export default function requestClient( state = initialState, action ) {
     case REQUEST_CLIENT.UPDATE_FORM_PARAMETER_KEY:
       return {
         ...state,
-        formList: updateListObject(state.formList, action.index, {
-          key: action.key || ''
-        })
+        formList: updateListObject(
+          state.formList,
+          action.index,
+          {key: action.key || ''}
+          )
       }
     case REQUEST_CLIENT.UPDATE_FORM_PARAMETER_VALUE:
       return {

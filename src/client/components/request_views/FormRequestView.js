@@ -40,6 +40,14 @@ const FormRequestView =({
     }
   }
 
+  const getChoices =(opts, item)=>{
+    const option = opts.find(o => o.name === item.key)
+    if(!option) return null
+
+    // Choices should trump option.type
+    return get(option, 'choices', null)
+  }
+
   return(
     <div style={ styles.base }>
       {formList.map((item, i) =>
@@ -50,8 +58,9 @@ const FormRequestView =({
           param={item.key}
           value={item.value}
           type={item.type}
-          isDisabled={item.isDisabled}
           options={options || []}
+          isDisabled={item.isDisabled}
+          choices={ getChoices(options, item) }
           onValueUpdate={onValueUpdate}
           onKeyUpdate={onKeyUpdate}
           onDelete={onDelete}

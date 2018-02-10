@@ -9,8 +9,10 @@ import Input from './Input'
 const ParameterInput =(
   {
     index,
+    choices,
     options,
     value,
+    type,
     param,
     onAdd,
     onKeyUpdate,
@@ -20,6 +22,7 @@ const ParameterInput =(
     isDisabled,
     onCheck
   })=>{
+
   
   const styles = {
     base:{
@@ -86,6 +89,10 @@ const ParameterInput =(
     }
   }
 
+
+
+
+
   return(
     <div style={ styles.base }>
 
@@ -119,44 +126,17 @@ const ParameterInput =(
 
       {/* Value Dropdown */}
 
-      <Input
-        autoFocus
-        placeholder={'value'}
+      <ValueInput
+        index={index}
         value={value}
-        onChange={ (value)=> onValueUpdate(index, value) }
-        onClick={()=>{}}
-        isDisabled={!param}
-        onEnterKey={ onAdd }
+        type={type}
+        choices={choices}
+        param={param}
+        onValueUpdate={onValueUpdate}
+        onAdd={onAdd}
+        style={{}}
       />
 
-      {/* options
-        ? <Select
-            style={styles.select}
-            onChange={(value)=> onValueUpdate(index, value)}
-            value={ param }
-            placeholder={'Parameter'}
-            isDisabled={ !options && !options.length }
-          >
-            { options.map(option =>
-              <SelectOption
-                style={ styles.dropdownOption }
-                key={option}
-                text={option}
-                value={option}
-              />
-            )}
-          </Select>
-
-        : <Input
-            autoFocus
-            placeholder={'value'}
-            value={value}
-            onChange={ (value)=> onValueUpdate(index, value) }
-            onClick={()=>{}}
-            isDisabled={!param}
-            onEnterKey={ onAdd }
-          />
-      */}
 
       <div style={styles.deleteContainer}>
         <Button
@@ -170,4 +150,48 @@ const ParameterInput =(
   )
 }
 
-export default ParameterInput 
+export default ParameterInput
+
+
+
+
+const ValueInput =({
+  type,
+  value,
+  choices,
+  param,
+  onValueUpdate,
+  onAdd,
+  index
+  })=>{
+
+
+  type = String(type).toLowerCase()
+
+  if(choices) return (
+    <div>choices</div>
+  )
+
+  switch (type){
+    case 'bool':
+      return (
+        <div>bool</div>
+      )
+    case 'date':
+      return (
+        <div>date</div>
+      )
+  }
+
+  return(
+    <Input
+      autoFocus
+      placeholder={'value'}
+      value={value}
+      onChange={ (value)=> onValueUpdate(index, value) }
+      onClick={()=>{}}
+      isDisabled={!param}
+      onEnterKey={ onAdd }
+    />
+  )
+}
