@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button, SelectOption, Select, Checkbox } from 'reactables'
+import { Button, SelectOption, Select, Checkbox, DateTimePicker } from 'reactables'
 import icons from '../constants/icons'
 import colors, {highlight, secondary} from '../constants/colors'
 import Icon from './Icon'
 import Input from './Input'
+import merge from 'lodash/merge'
 
 const ParameterInput =(
   {
@@ -23,7 +24,6 @@ const ParameterInput =(
     onCheck
   })=>{
 
-  
   const styles = {
     base:{
       display: 'flex',
@@ -35,9 +35,9 @@ const ParameterInput =(
     },
     select:{
       base:{
-        display: 'flex',
-        justifyContent: 'space-between',
         width: 150,
+        maxWidth: 150,
+        minWidth: 150,
         marginRight: 10,
         backgroundColor: 'transparent',
         borderRight: 'none',
@@ -89,10 +89,6 @@ const ParameterInput =(
     }
   }
 
-
-
-
-
   return(
     <div style={ styles.base }>
 
@@ -100,9 +96,7 @@ const ParameterInput =(
         isChecked={!isDisabled}
         onClick={(isChecked)=> onCheck(index, !isChecked)}
         size={14}
-        style={{
-
-        }}
+        style={{container:{flex: 0,}}}
       />
 
       {/* Key Param Select */}
@@ -115,7 +109,6 @@ const ParameterInput =(
       >
         {options ? options.map((option, i) =>
           <SelectOption
-            style={ styles.dropdownOption }
             key={ i }
             text={option.name || ''}
             value={option.name || ''}
@@ -134,7 +127,7 @@ const ParameterInput =(
         param={param}
         onValueUpdate={onValueUpdate}
         onAdd={onAdd}
-        style={{}}
+        style={styles}
       />
 
 
@@ -146,6 +139,7 @@ const ParameterInput =(
           onClick={ ()=> onDelete(index) }
         />
       </div>
+
     </div>
   )
 }
@@ -162,24 +156,61 @@ const ValueInput =({
   param,
   onValueUpdate,
   onAdd,
-  index
+  index,
+  style
   })=>{
-
 
   type = String(type).toLowerCase()
 
+  const selectStyle = merge({}, style.select, {base: {
+    width: '100%',
+    minWidth: null,
+    maxWidth: null,
+  }})
+
   if(choices) return (
-    <div>choices</div>
+    <Select
+      style={selectStyle}
+      onChange={(val)=> onValueUpdate(index, val)}
+      value={ value }
+      placeholder={'Choices'}
+    >
+      {choices.map(choice =>
+        <SelectOption
+          key={choice}
+          text={choice}
+          value={choice}
+        />
+      )}
+    </Select>
   )
 
   switch (type){
     case 'bool':
       return (
-        <div>bool</div>
+        <Select
+          style={selectStyle}
+          onChange={(val)=> onValueUpdate(index, val)}
+          value={ value }
+          placeholder={'Bool'}
+        >
+          <SelectOption
+            text={'True'}
+            value={true}
+          />
+          <SelectOption
+            text={'False'}
+            value={false}
+          />
+        </Select>
       )
     case 'date':
       return (
-        <div>date</div>
+        <DateTimePicker
+          placeholder={'Date'}
+          startDate={value}
+          onChange={(val)=> onValueUpdate(index, val)}
+        />
       )
   }
 
@@ -188,7 +219,7 @@ const ValueInput =({
       autoFocus
       placeholder={'value'}
       value={value}
-      onChange={ (value)=> onValueUpdate(index, value) }
+      onChange={ (val)=> onValueUpdate(index, val) }
       onClick={()=>{}}
       isDisabled={!param}
       onEnterKey={ onAdd }
