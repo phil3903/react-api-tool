@@ -116,7 +116,7 @@ export default class ExportWizard extends React.Component {
                   key={i}
                   index={i}
                   listLength={columns.length}
-                  keyOptions={paths}
+                  options={paths}
                   param={item.key}
                   value={item.value}
                   onValueUpdate={updateColumnValue}

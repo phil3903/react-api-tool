@@ -86,8 +86,6 @@ const ParameterInput =(
     }
   }
 
-  console.log(options)
-
   return(
     <div style={ styles.base }>
 
@@ -108,12 +106,12 @@ const ParameterInput =(
         placeholder={'Parameter'}
         isDisabled={ !options.length }
       >
-        {options ? options.map(option =>
+        {options ? options.map((option, i) =>
           <SelectOption
             style={ styles.dropdownOption }
-            key={option.name}
-            text={option.name}
-            value={option.name}
+            key={ i }
+            text={option.name || ''}
+            value={option.name || ''}
           />
         ) : null}
       </Select>
@@ -164,7 +162,7 @@ const ParameterInput =(
         <Button
           style={ styles.deleteButton }
           text={<Icon name={icons.delete_forever} />}
-          isDisabled={ listLength <= 1}
+          isDisabled={ listLength ? listLength <= 1 : true }
           onClick={ ()=> onDelete(index) }
         />
       </div>
