@@ -53,6 +53,9 @@ routes:
       This is a long description,
       and will render as a single line.
     endpoint: fruits/:id
+    params:
+      - name: id
+      - description: any mongo id for a fruid
     body:
       - name: count
         type: number

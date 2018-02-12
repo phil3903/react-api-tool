@@ -45,12 +45,14 @@ function* watchLoadRoute(){
   while(true){
     const { route } = yield take(DOCS.LOAD_ROUTE)
 
+    console.log(route)
+
     //const params = yield formatParamInputList(route.params)
 
     // put the saved data in or default
     yield put(updateJsonInput(route.json || '{}'))
     yield put(updateFormInputList(route.form || [listObj]))
-    yield put(updateParamInputList(route.params))
+    //yield put(updateParamInputList(route.params))
   }
 }
 

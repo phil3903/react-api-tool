@@ -4,7 +4,7 @@ import { entityRequest } from './_root_saga'
 import { REQUEST_CLIENT, updateUrlMethod, updateUrlInput, sendRequestEntity, saveRequestEntity } from '../actions/request_client_actions'
 import { DOCS } from '../actions/docs_actions'
 import { selectEnvironment, selectRoute } from '../reducers/docs_reducer'
-import { selectParameters, selectUrl, selectMethod, selectFormList, selectJsonInput } from '../reducers/request_client_reducer'
+import { selectFormParameters, selectUrl, selectMethod, selectFormList, selectJsonInput } from '../reducers/request_client_reducer'
 import * as responseActions from '../actions/response_client_actions'
 import * as api from '../services/request_client_service'
 
@@ -37,9 +37,9 @@ function* watchSendRequest(){
   while (true) {
     yield take(REQUEST_CLIENT.EXECUTE_SEND_REQUEST)
 
-    const environment = yield select(selectEnvironment)
+    const environment = yield select(selectFormEnvironment)
     const base = environment.fullUrl
-    const parameters = yield select(selectParameters)
+    const parameters = yield select(selectFormParameters)
     const url = yield select(selectUrl)
     const method = yield select(selectMethod)
 

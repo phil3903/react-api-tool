@@ -197,9 +197,18 @@ class RequestClient extends React.Component {
             : null
           }
 
+          {console.log(this.props)}
           { isParamsViewActive
             ? <ParamsRequestView
-              isActive={ isParamsViewActive }/>
+              isActive={ isParamsViewActive }
+              paramsList={this.props.paramsList}
+              options={ route.params || []}
+              onAdd={ this.props.addParamsParameter }
+              onKeyUpdate={ this.props.updateParamsParameterKey }
+              onValueUpdate={ this.props.updateParamsParameterValue }
+              onDelete={ this.props.deleteParamsParameter }
+              onCheckParameter={this.props.disableParamsParameter}
+            />
             : null
           }
 
@@ -234,6 +243,12 @@ export default connect(mapStateToProps, {
   setRequestFormat: requestActions.setRequestFormat,
   updateJsonInput: requestActions.updateJsonInput,
   setJsonValidation: requestActions.setJsonValidation,
+  updateParamsInputList: requestActions.updateParamsInputList,
+  addParamsParameter: requestActions.addParamsParameter,
+  deleteParamsParameter: requestActions.deleteParamsParameter,
+  disableParamsParameter: requestActions.disableParamsParameter,
+  updateParamsParameterKey: requestActions.updateParamsParameterKey,
+  updateParamsParameterValue: requestActions.updateParamsParameterValue,
   showSaveModal,
   loadEnvironment,
   loadRoute
