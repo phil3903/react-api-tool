@@ -186,9 +186,18 @@ export const selectFormParameters =(state)=> {
 
   if(requestFormat === 'json' && jsonInput.length)
     return JSON.parse(jsonInput)
+}
 
+export const selectParamsParameters =(state)=>{
+  const paramsList = state.requestClient.paramsList
+
+  return paramsList.reduce((obj, param) => {
+    if(param.isDisabled) return obj
+    return {...obj, [param.key]: param.value}
+  }, {})
 }
 export const selectMethod =(state)=> state.requestClient.urlMethod
 export const selectUrl =(state)=> state.requestClient.urlInput
 export const selectJsonInput = (state)=> state.requestClient.jsonInput
 export const selectFormList =(state)=> state.requestClient.formList
+export const selectParamsList =(state)=> state.requestClient.paramsList
