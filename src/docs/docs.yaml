@@ -55,7 +55,7 @@ routes:
     endpoint: fruits/:id
     params:
       - name: id
-      - description: any mongo id for a fruid
+        description: any mongo id for a fruid
     body:
       - name: count
         type: number

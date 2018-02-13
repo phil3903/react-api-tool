@@ -197,18 +197,17 @@ class RequestClient extends React.Component {
             : null
           }
 
-          {console.log(this.props)}
           { isParamsViewActive
             ? <ParamsRequestView
-              isActive={ isParamsViewActive }
-              paramsList={this.props.paramsList}
-              options={ route.params || []}
-              onAdd={ this.props.addParamsParameter }
-              onKeyUpdate={ this.props.updateParamsParameterKey }
-              onValueUpdate={ this.props.updateParamsParameterValue }
-              onDelete={ this.props.deleteParamsParameter }
-              onCheckParameter={this.props.disableParamsParameter}
-            />
+                isActive={ isParamsViewActive }
+                paramsList={this.props.paramsList}
+                options={ route.params || []}
+                onAdd={ this.props.addParamsParameter }
+                onKeyUpdate={ this.props.updateParamsParameterKey }
+                onValueUpdate={ this.props.updateParamsParameterValue }
+                onDelete={ this.props.deleteParamsParameter }
+                onCheckParameter={this.props.disableParamsParameter}
+              />
             : null
           }
 

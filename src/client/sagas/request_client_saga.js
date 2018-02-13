@@ -20,6 +20,8 @@ export const sendRequest = entityRequest.bind(null, sendRequestEntity, api.sendR
  * Workers
  */
 
+
+
 function* updateClientUrlBar(){
   const route = yield select(selectRoute)
   const ENDPOINT = route.endpoint ? '/' + route.endpoint : ''
@@ -61,10 +63,6 @@ function* watchSendRequest(){
     const method = yield select(selectMethod)
 
     const fullUrl = yield mergeUrlWithParams(base, url, paramsParameters)
-
-    console.log(fullUrl)
-
-
 
     yield call(sendRequest, fullUrl, method.toUpperCase(), formParameters)
     yield put(responseActions.setSubnav('response'))
