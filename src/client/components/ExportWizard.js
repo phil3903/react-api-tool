@@ -110,13 +110,20 @@ export default class ExportWizard extends React.Component {
 
           { format === 'csv' ?
             <section style={ styles.section }>
-              <Heading size={2} text={'Fields'} style={styles.heading}/>
+              <Heading
+                size={2}
+                text={'Fields'}
+                style={styles.heading}
+              />
+              <p style={{margin: '0 0 20px 0', padding: 0, fontSize: 12}}>
+                Note: Please select the keys you would like to export. A * indicates an array, and " . " indicates an object.
+              </p>
               {columns ? columns.map((item, i) =>
                 <ParameterInput
                   key={i}
                   index={i}
-                  listLength={columns.length}
-                  options={paths}
+                  listLength={columns ? columns.length : 0}
+                  options={paths || []}
                   param={item.key}
                   value={item.value}
                   onValueUpdate={updateColumnValue}
@@ -139,7 +146,7 @@ export default class ExportWizard extends React.Component {
           style={styles.exportButton}
           text={'Export Data'}
           onClick={executeExport}
-          isDisabled={ !format.length }
+          isDisabled={ !format }
         />
       </div>
     )

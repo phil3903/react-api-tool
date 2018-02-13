@@ -6,6 +6,8 @@ import colors, {highlight, secondary} from '../constants/colors'
 import Icon from './Icon'
 import Input from './Input'
 import merge from 'lodash/merge'
+import get from 'lodash/get'
+import isString from 'lodash/isString'
 
 const ParameterInput =(
   {
@@ -89,6 +91,10 @@ const ParameterInput =(
     }
   }
 
+  const getOption =(opt)=>{
+    return get(opt, 'name', isString(opt) ? opt : '')
+  }
+
   return(
     <div style={ styles.base }>
 
@@ -110,8 +116,8 @@ const ParameterInput =(
         {options ? options.map((option, i) =>
           <SelectOption
             key={ i }
-            text={option.name || ''}
-            value={option.name || ''}
+            text={getOption(option)}
+            value={getOption(option)}
           />
         ) : null}
       </Select>
