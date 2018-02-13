@@ -18,7 +18,7 @@ const initialState = {
   urlMethod: '',
 
   formList: [listObj],
-  paramList: [listObj],
+  paramsList: [listObj],
   jsonInput: '{}',
 
   isJsonValid: true
@@ -28,6 +28,10 @@ const initialState = {
 
 export default function requestClient( state = initialState, action ) {
   switch(action.type){
+
+    /**
+     * Request View Management
+     */
     case REQUEST_CLIENT.SET_SUBNAV:
       return {...state, subnav: action.subnav}
     case REQUEST_CLIENT.SET_REQUEST_FORMAT:
@@ -40,10 +44,10 @@ export default function requestClient( state = initialState, action ) {
     case REQUEST_CLIENT.UPDATE_URL_METHOD:
       return {...state, urlMethod: action.method}
 
-    case REQUEST_CLIENT.UPDATE_JSON_INPUT:
-      return{...state,
-        jsonInput: action.input
-      }
+    /**
+     * Form View
+     */
+
     case REQUEST_CLIENT.UPDATE_FORM_INPUT_LIST:
       return {...state,
         formList: action.input
@@ -67,9 +71,11 @@ export default function requestClient( state = initialState, action ) {
     case REQUEST_CLIENT.UPDATE_FORM_PARAMETER_KEY:
       return {
         ...state,
-        formList: updateListObject(state.formList, action.index, {
-          key: action.key || ''
-        })
+        formList: updateListObject(
+          state.formList,
+          action.index,
+          {key: action.key || '', value: ''}
+        )
       }
     case REQUEST_CLIENT.UPDATE_FORM_PARAMETER_VALUE:
       return {
@@ -79,8 +85,63 @@ export default function requestClient( state = initialState, action ) {
         })
       }
 
+    /**
+     * JSON View
+     */
+
+    case REQUEST_CLIENT.UPDATE_JSON_INPUT:
+      return{...state,
+        jsonInput: action.input
+      }
+
     case REQUEST_CLIENT.SET_JSON_VALIDATION:
       return {...state, isJsonValid: action.isValid}
+
+    /**
+     * Params View
+     */
+
+    case REQUEST_CLIENT.UPDATE_PARAMS_INPUT_LIST:
+      return {...state,
+        paramsList: action.input
+      }
+
+    case REQUEST_CLIENT.ADD_PARAMS_PARAMETER:
+      return {...state,
+        paramsList: [...state.paramsList, listObj]
+      }
+    case REQUEST_CLIENT.DELETE_PARAMS_PARAMETER:
+      return {...state,
+        paramsList: deleteListObject(state.paramsList, action.index)
+      }
+    case REQUEST_CLIENT.DISABLE_PARAMS_PARAMETER:
+      return {
+        ...state,
+        paramsList: updateListObject(state.paramsList, action.index, {
+          isDisabled: action.isDisabled
+        })
+      }
+    case REQUEST_CLIENT.UPDATE_PARAMS_PARAMETER_KEY:
+      return {
+        ...state,
+        paramsList: updateListObject(
+          state.paramsList,
+          action.index,
+          {key: action.key || '', value: ''}
+        )
+      }
+    case REQUEST_CLIENT.UPDATE_PARAMS_PARAMETER_VALUE:
+      return {
+        ...state,
+        paramsList: updateListObject(state.paramsList, action.index, {
+          value: action.value
+        })
+      }
+
+
+    /**
+     * Reset
+     */
 
     case REQUEST_CLIENT.RESET:
       return initialState
@@ -114,7 +175,7 @@ const deleteListObject =(array, index)=>{
  * Selectors
  */
 
-export const selectParameters =(state)=> {
+export const selectFormParameters =(state)=> {
   const { requestFormat, formList, jsonInput } = state.requestClient
 
   if(requestFormat === 'form')
@@ -125,9 +186,18 @@ export const selectParameters =(state)=> {
 
   if(requestFormat === 'json' && jsonInput.length)
     return JSON.parse(jsonInput)
+}
 
+export const selectParamsParameters =(state)=>{
+  const paramsList = state.requestClient.paramsList
+
+  return paramsList.reduce((obj, param) => {
+    if(param.isDisabled) return obj
+    return {...obj, [param.key]: param.value}
+  }, {})
 }
 export const selectMethod =(state)=> state.requestClient.urlMethod
 export const selectUrl =(state)=> state.requestClient.urlInput
 export const selectJsonInput = (state)=> state.requestClient.jsonInput
 export const selectFormList =(state)=> state.requestClient.formList
+export const selectParamsList =(state)=> state.requestClient.paramsList

@@ -1,17 +1,10 @@
 Make Save to Profile in admin work
 
---- "Choice" dropdown for param values
---- Add another tab bar heading for /:id params
 --- Export - usage needs clarity
+--- build script
 
-Dates: show picker for this type
-Bool: show dropdown for this type
-Toggle Params on/off with checkbox
 
 
 Nice To Have
 - Clickable docs that prefill in params, and add required fields automatically
 - Sync JSON and Form View
-
-
-MAKE A GOD DAMN BUILD SCRIPT!

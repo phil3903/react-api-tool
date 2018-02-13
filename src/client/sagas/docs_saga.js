@@ -50,7 +50,7 @@ function* watchLoadRoute(){
     // put the saved data in or default
     yield put(updateJsonInput(route.json || '{}'))
     yield put(updateFormInputList(route.form || [listObj]))
-    yield put(updateParamInputList(route.params))
+    //yield put(updateParamInputList(route.params))
   }
 }
 

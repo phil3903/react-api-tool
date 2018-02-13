@@ -92,8 +92,6 @@ class RequestClient extends React.Component {
 
     const { requestFormat, requestFormatDisplay, subnav, route } = this.props
 
-    console.log(route)
-
     const isFormViewActive =   subnav === 'format' && requestFormat === 'form'
     const isJsonViewActive =   subnav === 'format' && requestFormat === 'json'
     const isParamsViewActive = subnav === 'params'
@@ -174,7 +172,7 @@ class RequestClient extends React.Component {
             ? <FormRequestView
                 isActive={ isFormViewActive }
                 formList={this.props.formList}
-                options={ route.params || route.body }
+                options={ route.query || route.body || [] }
                 onAdd={ this.props.addFormParameter }
                 onKeyUpdate={ this.props.updateFormParameterKey }
                 onValueUpdate={ this.props.updateFormParameterValue }
@@ -201,7 +199,15 @@ class RequestClient extends React.Component {
 
           { isParamsViewActive
             ? <ParamsRequestView
-              isActive={ isParamsViewActive }/>
+                isActive={ isParamsViewActive }
+                paramsList={this.props.paramsList}
+                options={ route.params || []}
+                onAdd={ this.props.addParamsParameter }
+                onKeyUpdate={ this.props.updateParamsParameterKey }
+                onValueUpdate={ this.props.updateParamsParameterValue }
+                onDelete={ this.props.deleteParamsParameter }
+                onCheckParameter={this.props.disableParamsParameter}
+              />
             : null
           }
 
@@ -236,6 +242,12 @@ export default connect(mapStateToProps, {
   setRequestFormat: requestActions.setRequestFormat,
   updateJsonInput: requestActions.updateJsonInput,
   setJsonValidation: requestActions.setJsonValidation,
+  updateParamsInputList: requestActions.updateParamsInputList,
+  addParamsParameter: requestActions.addParamsParameter,
+  deleteParamsParameter: requestActions.deleteParamsParameter,
+  disableParamsParameter: requestActions.disableParamsParameter,
+  updateParamsParameterKey: requestActions.updateParamsParameterKey,
+  updateParamsParameterValue: requestActions.updateParamsParameterValue,
   showSaveModal,
   loadEnvironment,
   loadRoute

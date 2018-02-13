@@ -6,13 +6,14 @@ import { Button } from 'reactables'
 import ParameterInput from '../ParameterInput'
 
 const ParamsRequestView =({
-  paramList,
-  keyOptions,
+  paramsList,
+  options,
   onKeyUpdate,
   onValueUpdate,
   onDelete,
   isActive,
-  onAdd
+  onAdd,
+  onCheckParameter
 })=>{
 
   if(!isActive) return null
@@ -39,9 +40,45 @@ const ParamsRequestView =({
     }
   }
 
+  const getChoices =(opts, item)=>{
+    const option = opts.find(o => o.name === item.key)
+    if(!option) return null
+
+    // Choices should trump option.type
+    return get(option, 'choices', null)
+  }
+
   return(
     <div style={ styles.base }>
+      {paramsList.map((item, i) =>
+        <ParameterInput
+          key={i}
+          index={i}
+          listLength={paramsList.length}
+          param={item.key}
+          value={item.value}
+          type={item.type}
+          options={options || []}
+          isDisabled={item.isDisabled}
+          choices={ getChoices(options, item) }
+          onValueUpdate={onValueUpdate}
+          onKeyUpdate={onKeyUpdate}
+          onDelete={onDelete}
+          onAdd={onAdd}
+          onCheck={onCheckParameter}
+        />
+      )}
 
+      {
+        get(paramsList[paramsList.length - 1], 'value.length', {})
+          ?
+          <Button
+            text={'Add Another'}
+            style={styles.addButton}
+            onClick={ onAdd }
+          />
+          : null
+      }
 
     </div>
   )

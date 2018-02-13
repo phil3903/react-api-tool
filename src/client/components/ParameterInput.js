@@ -1,16 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button, SelectOption, Select, Checkbox } from 'reactables'
+import { Button, SelectOption, Select, Checkbox, DateTimePicker } from 'reactables'
 import icons from '../constants/icons'
 import colors, {highlight, secondary} from '../constants/colors'
 import Icon from './Icon'
 import Input from './Input'
+import merge from 'lodash/merge'
+import get from 'lodash/get'
+import isString from 'lodash/isString'
 
 const ParameterInput =(
   {
     index,
+    choices,
     options,
     value,
+    type,
     param,
     onAdd,
     onKeyUpdate,
@@ -20,7 +25,7 @@ const ParameterInput =(
     isDisabled,
     onCheck
   })=>{
-  
+
   const styles = {
     base:{
       display: 'flex',
@@ -32,9 +37,9 @@ const ParameterInput =(
     },
     select:{
       base:{
-        display: 'flex',
-        justifyContent: 'space-between',
         width: 150,
+        maxWidth: 150,
+        minWidth: 150,
         marginRight: 10,
         backgroundColor: 'transparent',
         borderRight: 'none',
@@ -86,6 +91,10 @@ const ParameterInput =(
     }
   }
 
+  const getOption =(opt)=>{
+    return get(opt, 'name', isString(opt) ? opt : '')
+  }
+
   return(
     <div style={ styles.base }>
 
@@ -93,9 +102,7 @@ const ParameterInput =(
         isChecked={!isDisabled}
         onClick={(isChecked)=> onCheck(index, !isChecked)}
         size={14}
-        style={{
-
-        }}
+        style={{container:{flex: 0,}}}
       />
 
       {/* Key Param Select */}
@@ -108,10 +115,9 @@ const ParameterInput =(
       >
         {options ? options.map((option, i) =>
           <SelectOption
-            style={ styles.dropdownOption }
             key={ i }
-            text={option.name || ''}
-            value={option.name || ''}
+            text={getOption(option)}
+            value={getOption(option)}
           />
         ) : null}
       </Select>
@@ -119,44 +125,17 @@ const ParameterInput =(
 
       {/* Value Dropdown */}
 
-      <Input
-        autoFocus
-        placeholder={'value'}
+      <ValueInput
+        index={index}
         value={value}
-        onChange={ (value)=> onValueUpdate(index, value) }
-        onClick={()=>{}}
-        isDisabled={!param}
-        onEnterKey={ onAdd }
+        type={type}
+        choices={choices}
+        param={param}
+        onValueUpdate={onValueUpdate}
+        onAdd={onAdd}
+        style={styles}
       />
 
-      {/* options
-        ? <Select
-            style={styles.select}
-            onChange={(value)=> onValueUpdate(index, value)}
-            value={ param }
-            placeholder={'Parameter'}
-            isDisabled={ !options && !options.length }
-          >
-            { options.map(option =>
-              <SelectOption
-                style={ styles.dropdownOption }
-                key={option}
-                text={option}
-                value={option}
-              />
-            )}
-          </Select>
-
-        : <Input
-            autoFocus
-            placeholder={'value'}
-            value={value}
-            onChange={ (value)=> onValueUpdate(index, value) }
-            onClick={()=>{}}
-            isDisabled={!param}
-            onEnterKey={ onAdd }
-          />
-      */}
 
       <div style={styles.deleteContainer}>
         <Button
@@ -166,8 +145,90 @@ const ParameterInput =(
           onClick={ ()=> onDelete(index) }
         />
       </div>
+
     </div>
   )
 }
 
-export default ParameterInput 
+export default ParameterInput
+
+
+
+
+const ValueInput =({
+  type,
+  value,
+  choices,
+  param,
+  onValueUpdate,
+  onAdd,
+  index,
+  style
+  })=>{
+
+  type = String(type).toLowerCase()
+
+  const selectStyle = merge({}, style.select, {base: {
+    width: '100%',
+    minWidth: null,
+    maxWidth: null,
+  }})
+
+  if(choices) return (
+    <Select
+      style={selectStyle}
+      onChange={(val)=> onValueUpdate(index, val)}
+      value={ value }
+      placeholder={'Choices'}
+    >
+      {choices.map(choice =>
+        <SelectOption
+          key={choice}
+          text={choice}
+          value={choice}
+        />
+      )}
+    </Select>
+  )
+
+  switch (type){
+    case 'bool':
+      return (
+        <Select
+          style={selectStyle}
+          onChange={(val)=> onValueUpdate(index, val)}
+          value={ value }
+          placeholder={'Bool'}
+        >
+          <SelectOption
+            text={'True'}
+            value={true}
+          />
+          <SelectOption
+            text={'False'}
+            value={false}
+          />
+        </Select>
+      )
+    case 'date':
+      return (
+        <DateTimePicker
+          placeholder={'Date'}
+          startDate={value}
+          onChange={(val)=> onValueUpdate(index, val)}
+        />
+      )
+  }
+
+  return(
+    <Input
+      autoFocus
+      placeholder={'value'}
+      value={value}
+      onChange={ (val)=> onValueUpdate(index, val) }
+      onClick={()=>{}}
+      isDisabled={!param}
+      onEnterKey={ onAdd }
+    />
+  )
+}
